@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- p>label+input+button -->
+    <h1>할 일 입력</h1> 
+    <p>
+        <fieldset>
+            <legend>기본정보</legend>
+            <label for="title">할 일:</label>
+            <input id="title" class="title" type="text" value="미니 프로젝트 계획하기">
+            <button id="saveBtn">SAVE</button>
+        </fieldset>
+    </p>
+    <p>
+        <fieldset>
+            <legend>결과</legend>
+            <p class="resultArea">결과: </p>
+        </fieldset>
+    </p>
+
+
+    <script>
+        /* 
+        1. 사용할 요소들 DOM 셀렉트 (getElementById(), querySelector())
+        2. saveBtn에 event handler 걸기 (onclick=function(){}, addEventListner())
+        3. title의 값을 가져오기 title.value
+        4. 결과를 resultArea에 보여주기 innerText
+        */
+
+        var title = document.getElementById('title');
+        var saveBtn = document.getElementById('saveBtn');
+        var resultArea = document.getElementsByClassName('resultArea')[0];
+
+        
+        saveBtn.onclick = function() {                                    
+            // ` 포멧 문자열
+            resultArea.innerHTML += `${title.value}<br>`;
+            title.value=""; 
+
+        }
+        
+
+
+
+    </script>
+</body>
+</html>

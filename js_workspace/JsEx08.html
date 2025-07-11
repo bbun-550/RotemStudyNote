@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class MyCls {
+            // 생성자 함수 constructor() ; python __init__ 같은 역할
+            constructor(user) { // 자동 this ; python self와 다름
+                if(user == undefined) {
+                    this.user = "홍길동";
+                } else {
+                    this.user = user
+                }                
+                
+            }
+
+            // 클래서 맴버 메서드(맴버 함수) : function 키워드 사용하지 않음
+            fn01() {
+                console.log("MyCls이 fn01() 함수 호출");
+                console.log(this.user);
+                // this 사용되는 위치에 따라서 window 또는 객체가 된다
+                // 클래스 외부에서 사용시 거의 window
+                // 내장함수, 클래스 내부에서 this가 객체 자신이 된다
+            }
+        }
+
+        // 객체 생성 - new 연산자 사용
+        let myObj = new MyCls();
+        myObj.fn01();
+
+        let myObj2 = new MyCls("마징가");
+        myObj2.fn01();
+
+    </script>
+</body>
+</html>

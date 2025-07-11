@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- html 주석: 입력 폼 만들어서 값을 입력 받기 form>label+input -->
+    <form id="myForm" action="">
+        <label for="">선택 값: </label>
+        <input name="choiceNo" type="text">
+        <input type="submit" value="확인">
+    </form>
+    <script>
+
+        var user1 = "hong1";
+        var user2 = "hong2";
+        var user3 = "hong3";
+        var user4 = "hong4";
+        var user5 = "hong5";
+
+        // JS 함수 선언
+        // 형식 function 함수명(매개변수) {}
+        function method01() {
+            console.log("-----------for문------------");            
+            for (var i=1; i<=5; i++) { 
+                console.log(this['user'+i]);
+            }
+        }
+
+        function method02() {
+            console.log("-----------while문------------");
+            var i=5;
+            while( i>0) {
+                console.log(this['user'+i]);
+                i --;
+            }
+        }
+        // console.dir('.btn')
+        // myForm의 DOM 객체 가져온다
+    var myForm = document.querySelector("#myForm");
+    
+
+    myForm.onsubmit = function(event) {       
+        
+        event.preventDefault();
+        var choiceNo = this.choiceNo.value;
+        if(choiceNo == '1') {
+            method01();
+        } else {
+            method02();
+        }
+        }
+    </script>
+</body>
+</html>
