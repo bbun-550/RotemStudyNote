@@ -8,17 +8,25 @@
 <body>
     <h1>Todo List</h1>
     <p>
-        할일 : <input type="text" name="" id="">
-        <button>저장</button>
+        할일: <input type="text"><button>저장</button>
     </p>
-    <ul>
-        <li>미니프로젝트 계획하기</li>
-        <li>과제하기</li>
-        <li>운동하기</li>
-    </ul>
+    <ol id="todoListArea"></ol>
 
     <script>
-        avr
+        var todoListArea = document.getElementById('todoListArea');
+        var todoList = [
+            {id:1, "title":"미니프로젝트 기획", "done":false},
+            {id:2, "title":"운동하기", "done":false},
+            {id:3, "title":"반찬만들기", "done":true},
+            {id:4, "title":"자격증 공부하기", "done":false},
+        ];
+
+        var lisHTML = "";
+        for(var i=0; i<todoList.length; i++) {
+            lisHTML += `<li>${todoList[i]['title']} | ${todoList[i]['done']}</li>`;
+        }
+
+        todoListArea.innerHTML = lisHTML;
     </script>
 </body>
 </html>
