@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Todo List</h1>
+    <p>
+        할일: <input type="text" id="todoInput"><button id="saveBtn">저장</button>
+    </p>
+    <ol id="todoListArea"></ol>
+
+    <script>
+        var todoListArea = document.getElementById('todoListArea');
+        var saveBtn = document.getElementById('saveBtn');
+        var todoInput = document.getElementById('todoInput');
+
+        var todoList = [
+            {id:1, "title":"미니프로젝트 기획", "done":false},
+            {id:2, "title":"운동하기", "done":false},
+            {id:3, "title":"반찬만들기", "done":true},
+            {id:4, "title":"자격증 공부하기", "done":false},
+        ];
+        
+
+        function delBtnFn(btn) {
+            var delId = Number(btn.dataset.id)
+            
+            var delIndex = todoList.findIndex(function(id) {
+                return id.id == delId
+            });
+            
+            todoList.splice(delIndex,1);
+
+            drawList();
+            
+        };
+
+        function toggleBtn(btn) {
+            var toggleId = Number(btn.dataset.id)
+            
+            var toggleIndex = todoList.findIndex(function(id) {
+                return id.id == toggleId;
+            });
+            
+            if (toggleId != -1) {
+                todoList[toggleIndex]['done'] = !todoList[toggleIndex]['done'];
+                drawList();
+            }
+            
+                        
+        }
+
+
+        function drawList() {
+            var lisHTML = "";
+            for(var i=0; i<todoList.length; i++) {
+                lisHTML += `<li>
+                    <input type="checkbox"
+                        data-id=${todoList[i]['id']}
+                        data-done=${todoList[i]['done']}
+                        onchange="toggleBtn(this)"
+                        ${todoList[i]['done'] ? 'checked' : ""}>
+                    ${(todoList[i].done) ? `<del>${todoList[i].title}</del>` : todoList[i].title} |
+                    
+                    <button 
+                        data-id=${todoList[i]['id']}
+                        data-done=${todoList[i]['done']}
+                        onclick="delBtnFn(this)">삭제</button>
+                    </li>`;
+            }
+    
+            todoListArea.innerHTML = lisHTML;
+
+        };
+
+        
+        drawList();
+        
+        saveBtn.onclick = function() {
+            var todoValue = todoInput.value;
+            
+            todoList.push(
+                {id:todoList.length,
+                "title":todoValue,
+                "done":false
+                }
+            );
+            drawList();
+        }
+
+        
+
+    </script>
+</body>
+</html>
