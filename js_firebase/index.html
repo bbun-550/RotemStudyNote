@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to Firebase Hosting</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to Firebase Hosting</title>
+
+    <script defer src="/__/firebase/8.9.1/firebase-app.js"></script>
+    <script defer src="/__/firebase/8.9.1/firebase-auth.js"></script>
+    <script defer src="/__/firebase/8.9.1/firebase-firestore.js"></script>
+    <script defer src="/__/firebase/8.9.1/firebase-storage.js"></script>
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+  </head>
+  <body>
+    <h1>Todo List</h1>
+    할일: <input type="text" id="inputTodo"><button id="saveBtn">save</button>
+    <hr>
+    <fieldset>
+      <ul id="todoListArea">
+        <li>어떤 일</li>
+      </ul>
+    </fieldset>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var todoListArea = document.getElementById('todoListArea');
+        var todoList = [];
+        var saveBtn = document.getElementById('saveBtn');
+
+        function drawList() {
+            // console.log('drawList ...');
+            var lis = "";
+            todoList.forEach(function(item, index, list) {
+                lis += `<li>${item['id']} ${item['title']} ${item['done']}</li>`;
+            });
+            todoListArea.innerHTML = lis;
+        }
+        
+        try {
+            let app = firebase.app();
+            let db = firebase.firestore();
+
+            db.collection("todoList").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    let todo = doc.data();
+                    todo.docId = doc.id;
+                    todoList.push(todo);
+                    console.log(`${todo['docId']} => ${todo['id']} ${todo['title']} ${todo['done']}`);
+                });
+                drawList();
+            });
+          
+        } catch (e) {
+            console.error(e);
+            loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+        }
+      });
+    </script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+  <script>
+    var firebaseConfig = {
+      /////// --- 각자 개인 프로젝트 설정 값으로 수정.
+      apiKey: "AIzaSyCmNoFJbYxs9q2V0NXqnYVQ1wdQkfWJPUw",
+      authDomain: "mini-project-db5125.firebaseapp.com",
+      projectId: "mini-project-db5125",
+      storageBucket: "mini-project-db5125.firebasestorage.app",
+      messagingSenderId: "933998151478",
+      appId: "1:933998151478:web:1b1bcb67bc8e6179749597",
+      measurementId: "G-L08414RFWB"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  </body>
+</html>
