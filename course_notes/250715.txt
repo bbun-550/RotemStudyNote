@@ -37,11 +37,59 @@
 3. 처음 1회 설치 `npm install -g firebase-tools`
 4. `firebase login` : cli 로그인. 작업 끝나면 필히 로그아웃할 것.
 5. `firebase init` : firebase 프로젝트 생성
-	- 
+	- hosting 선택
+	- use an existing project
+	- public
+	- 읽어보면서 y/n 선택
+6. firebase 로컬테스트 서버 실행
+	- `firebase serve`
 
 
+firestore database 규칙 꼭 바꿔줘야함
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+```
+
+mysql table = firebase/mogoDB collection
 
 
 ---
 [step 온라인 교육](https://www.step.or.kr/)
 [위키독스 | 점프 투 장고](https://wikidocs.net/book/4223)
+- 클론코딩줌 ; react firebase 활용 javascript
+---
+### Github 차단된 푸시 해제법
+- 비밀 포함 푸시할 경우, push 차단함
+```terminal
+ error: GH013: Repository rule violations found for refs/heads/main.
+remote:
+remote: - GITHUB PUSH PROTECTION
+remote:   —————————————————————————————————————————
+remote:     Resolve the following violations before pushing again
+remote:
+remote:     - Push cannot contain secrets
+remote:
+remote:
+remote:      (?) Learn how to resolve a blocked push
+remote:      https://docs.github.com/code-security/secret-scanning/working-with-secret-scanning-and-push-protection/working-with-push-protection-from-the-command-line#resolving-a-blocked-push
+remote:
+remote:
+remote:       —— GitHub Personal Access Token ——————————————————————
+remote:        locations:
+remote:          - commit: 4dae46d094e741bbd1357e93f7b75a4c8673df45
+remote:            path: course_note/250704.txt:42
+```
+- 위 처럼 뜸.
+	- Learn how to resolve a blocked push 링크로 들어가면 설명있음
+	- GitHub Personal Access 뭐가 문제인지 알려줌
+
+1. `git log` : 커밋 기록 확인하기 위함
+2. `git reset HEAD^` or `git reset HEAD~n` : ^는 최근 커밋, ~n은 최근 n개의 commit을 삭제.
+3. 삭제한 다음에 `git push -f origin main`
