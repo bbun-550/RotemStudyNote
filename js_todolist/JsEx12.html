@@ -82,7 +82,8 @@
             var lisHTML = "";
                for(var i=0; i<todoList.length; i++) {
                    lisHTML += `<li>
-                    <input type="checkbox" ${(todoList[i].done) ? 'checked' : ""}
+                    <input type="checkbox" 
+                        ${(todoList[i].done) ? 'checked' : ""}
                         onchange="toggleBtn(this)"
                         data-id=${todoList[i]['id']}
                         class="toggleCheckbox">
