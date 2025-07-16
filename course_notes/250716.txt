@@ -1,0 +1,154 @@
+250716
+
+### fetch vs pull
+- `pull` = `fetch` + `merge`
+- `git fetch origin` : 변경사항을 로컬의 숨겨진 origin/main에 가져옴
+	- 내 main 브랜치는 그대로
+	- 변경사항 확인 후 `git merge origin/main`
+- `git pull origin main` : fetch+merge
+	- 팀원의 변경사항을 가져오고
+	- 내 로컬 브랜치와 자동 병합의 의미
+
+- `git log`로 차이 확인
+	- `git diff origin/main`으로 코드 변경점 확인 가능
+- 확인 후 `git merge origin/main`으로 병합
+
+#### Git 커밋 메시지 규칙
+1. 제목과 본문을 빈 행으로 구분한다.
+2. 제목은 50글자 이내로 제한한다.
+3. 제목의 첫 글자는 대문자로 작성한다.
+4. 제목 끝에는 마침표를 넣지 않는다.
+5. 제목은 명령문으로 사용하며 과거형을 사용하지 않는다.
+6. 본문의 각 행은 72글자 내로 제한한다.
+7. 어떻게 보다는 무엇과 왜를 설명한다.
+```
+// Header, Body, Footer는 빈 행으로 구분한다.
+타입(스코프): 주제(제목) // Header(헤더)
+본문 // Body(바디)
+바닥글 // Footer
+
+// Type
+feat : 새로운 기능 추가, 기존의 기능을 요구 사항에 맞추어 수정
+fix : 기능에 대한 버그 수정
+build : 빌드 관련 수정
+chore : 패키지 매니저 수정, 그 외 기타 수정 ex) .gitignore
+ci : CI 관련 설정 수정
+docs : 문서(주석) 수정
+style : 코드 스타일, 포맷팅에 대한 수정
+refactor : 기능의 변화가 아닌 코드 리팩터링 ex) 변수 이름 변경
+test : 테스트 코드 추가/수정
+release : 버전 릴리즈
+```
+---
+### Django
+
+- MTV : 프론트 세분화
+
+1. model : DB와 연결됨. 
+	- `model.py`
+	- sqlite 쓰게됨
+2. templates(view) : 사용자 화면에 보여질 HTML 파일을 저장하는 곳
+	- url 제어
+	- 데어터 표시/렌더링, 사용자 입력 받기, 응답형태 결정(json, html, xml...)
+
+3. view(controller) : 사용자 요청 처리, 어떤 화면 보여질지 결정
+	- Model과Template 사이 중재자. 뷰 컨트롤러. 제어문을 뷰에 심어준다
+	- `view.py`
+
+직접 개발하는 부분 : WSGI , TEMPLATE, VIEW, MODEL, FORM, URL RESOLUTION, SETTING
+
+- 웹서버 nginx(리눅스에 설치됨)에 배포
+
+tutorial ; project > 그 안에 여러 앱(navi bar에 있는 기능 한놈 한놈이 앱)
+
+1. 가상환경 설정
+	- cd workspace-django
+	- python -m venv myworld
+	- `cd myworld\Scripts\activate.bat` : pwsh 버전
+2. django 설치
+	- `python -m pip install django` 안되면 `pip install django`
+	- `python -m pip install "django==4.0.0"` 특정 버전 설치할 때
+	- `python -m django --version` or `django-admin --version` 버전 확인
+3. 프로젝트 생성
+	- `python -m django startproject 프로젝트명` or `django-admin` startproject 프로젝트명`
+
+local(<=>remote) host : 개발 서버이다. 나중에 nginx나 apache로 배포
+loopback ; 자기컴퓨터
+
+4. 슈퍼유저 계정 생성
+	- DB 초기화(프로젝트에 대한 DB를 만들어준다) : `python .\manage.py migrate`
+	- 슈퍼유저 생성 명령어 : `python .\manage.py createsuperuser`
+	- username, password 생성하면 됨 (admin / 1234)
+	- 되는지 확인(개발용) : `python .\manage.py runserver`
+| 명령어 | 설명 |
+| --- | --- |
+| `createsuperuser` | 관리자 계정 생성 |
+| `changepassword` | 기존 사용자 비밀번호 변경 |
+| `clearsessions` | DB에 저장된 만료 세션 정보 정리 |
+| `collectstatic` | 모든 static 파일을 하나의 폴더에 모아 배포 준비 |
+| `findstatic` | 특정 static 파일이 어디 있는지 확인 |
+| `runserver` | 개발 서버 실행 (기본 포트: 8000) |
+
+```
+manage.py
+프로젝트 관리 명령어 모음
+
+● 주요 명령어
+  ○ startapp - 앱 생성
+  ○ runserver - 서버 실행
+  ○ createsuperuser - 관리자 생성
+  ○ makemigrations app - app의 모델 변경 사항 체크
+  ○ migrate - 변경 사항을 DB에 반영
+  ○ shell - 쉘을 통해 데이터를 확인
+  ○ collectstatic - static파일을 한 곳에 모음
+
+● ex)
+./manage.py runserver 0.0.0.0:8080
+```
+#### 앱 생성
+1. `python manage.py startapp 앱명`
+2. settings.py > INSTALLED_APPS =[] 에 추가한 APP이름 추가
+3. model.py에 아래 내용 추가
+```
+# models.py
+from django.db import models
+
+# Create your models here.
+class Post(models.Model):
+    title = models.CharField(max_length=100)
+    author = models.CharField(max_length=50)
+    content = models.TextField()
+    url = models.URLField(blank=True)
+    email = models.EmailField()
+    created_at = models.DateTimeField(auto_now_add=True)
+```
+4. `python manage.py makemigrations` : 마이그레이션 파일 생성
+5. `python manage.py migrate` : DB 반영 및 생성
+```
+# 모델 목록 확인 명령어
+python manage.py showmigrations
+
+# 모델 자체의 목록(클래스 이름들)을 보고 싶을 때
+python manage.py inspectdb
+
+# 개발자 입장에서 모델 구조를 보기 위한 다른 방법
+python manage.py dbshell
+
+# SQLite의 경우 내장 쉘로 진입해서 테이블 확인 가능:
+.tables  -- 테이블 목록 확인
+.schema <테이블명>  -- 테이블 구조 확인
+```
+>[!summary]
+>`manage.py` : 프로젝트의 리모컨
+>`settings.py` : 프로젝트의 환경설정
+> `urls.py` : 네비게이션. url을 어떤 페이지로 연결할지 결정하는 지도
+> `models.py` : 데이터 설계도.
+> `views.py` : 데이터를 가지고 화면을 어떻게 보여줄지 결정
+> `templates/` : HTML 뷰. 사용자에게 보이는 페이지를 넣는 공간
+
+6. 관리자 페이지 확인
+	- `python manage.py createsuperuser`
+	- `admin.py` >> `from .models import Post admin.site.register(Post)`
+	- `python manage.py runserver` 테스트 실행
+
+7. 글쓰기(Create)
