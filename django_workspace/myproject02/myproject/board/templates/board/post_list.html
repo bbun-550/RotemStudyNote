@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<body>
+    <h2>제목 | 저자 | 날짜</h2>
+
+    <ul>
+    {% for post in posts %}
+        <li>
+        <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a> |
+        {{ post.author }} | {{ post.created_at|date:"D d M Y" }}
+        </li>
+    {% endfor %}
+    </ul>
+    <p>
+        <a href="{% url 'post_create' %}">작성</a> |
+        
+        
+    </p>
+</html>

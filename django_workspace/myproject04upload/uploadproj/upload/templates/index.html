@@ -1,0 +1,62 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Django Ajax File Upload</title>
+</head>
+<body>
+  <h2>📤 파일 업로드</h2>
+  <form id="uploadForm">
+    <input type="file" name="image" required><br>
+    <input type="text" name="description" placeholder="설명" required><br>
+    <button type="submit">업로드</button>
+  </form>
+
+  <h3>📂 업로드 목록</h3>
+  <ul id="fileList"></ul>
+
+  <script>
+    const form = document.getElementById('uploadForm');
+    const fileList = document.getElementById('fileList');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      fetch('http://127.0.0.1:8000/api/images/', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.json())
+      .then(() => loadFiles());
+    });
+
+    function loadFiles() {
+      fetch('http://127.0.0.1:8000/api/images/')
+        .then(res => res.json())
+        .then(data => {
+          fileList.innerHTML = '';
+          data.forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+              <img src="${item.image}" width="100"><br>
+              ${item.description} | ${new Date(item.uploaded_at).toLocaleString()}
+              <button onclick="deleteImage(${item.id})">삭제</button>
+            `;
+            fileList.appendChild(li);
+          });
+        });
+    }
+
+    function deleteImage(id) {
+      if (confirm('정말 삭제하시겠습니까?')) {
+        fetch(`http://127.0.0.1:8000/api/images/${id}/`, { method: 'DELETE' })
+          .then(() => loadFiles());
+      }
+    }
+
+    loadFiles();
+  </script>
+</body>
+</html>

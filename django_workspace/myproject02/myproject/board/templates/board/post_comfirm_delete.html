@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    제 목 : {{ post.title }}<br>
+    저 자 : {{ post.author }}<br>
+    내 용 : {{ post.content }}<br>
+    Email : {{ post.email }}<br>
+
+    <p>작성일 : {{ post.created_at|date:"D d M Y" }}</p>
+    <p>URL : <a href="{{ post.url }}">{{ post.url }}</a></p>   
+    <p>
+        <a href="{% url 'post_update' post.id %}">수정</a> |
+        <a href="{% url 'post_delete' post.id %}">삭제</a> |
+        <a href="{% url 'post_list' %}">목록으로</a>
+    </p>
+</body>
+</html>

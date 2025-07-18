@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>자유 게시판</h1>
+    <p>Board - 글 입력</p>
+    <fieldset>
+        <form method="post">
+            {% csrf_token %}
+
+            Author: <input type="text" name="author" value="{{ post.author }}"><br>
+            Title: <input type="text" name="title" value="{{ post.title }}"><br>
+            Content:<br><textarea name="content">{{ post.content }}</textarea><br>
+            Url: <input type="text" name="url" value="{{ post.url }}"><br>
+            Email: <input type="text" name="email" value="{{ post.email }}"><br>
+
+            <button type="submit">수정</button>
+        </form>      
+    </fieldset>
+    <p>
+        <a href="{% url 'post_list' %}">목록</a>
+    </p>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>자유 게시판</h1>
+    <p>Board - 글 입력</p>
+    <fieldset>
+        <form method="post">
+            {% csrf_token %}
+            Name: <input type="text" name="author"><br>
+            Title: <input type="text" name="title"><br>
+            Contents:<br><textarea name="content"></textarea><br>
+            Url: <input type="text" name="url"><br>
+            Email: <input type="text" name="email"><br>
+            <button type="submit">저장</button>
+        </form>        
+    </fieldset>
+
+    <form method="post">
+    {% csrf_token %}
+    
+    <button type="submit"></button>
+    </form>
+
+    <a href="{% url 'post_list' %}">목록으로</a>
+</body>
+</html>
