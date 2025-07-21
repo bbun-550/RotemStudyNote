@@ -1,0 +1,95 @@
+250721
+
+>[!summary] 복습 이미지 업로드
+>- pillow : django 내장 기능. 이미지 파일 처리, 
+>- (RESTAPI안에)serializer : 객체 직렬화. ~~한옥 옮기기~~. 순서대로 쌓고
+> view
+> DRF Django RESTapi Framework
+>- JWT JS Web Token : 인증처리할 때 사용. 굳이?... 대체 session으로 가능. ai 교육이기 때문에 여기에 나중에
+>### 과제: 이미지 업로드 구현
+
+
+---
+소켓 만들어서 채팅
+인간관계 DB
+
+#### Django 채팅 기능
+>[!info]
+> 브라우저 <> websocket <> Django Channels(ASGI) <> 
+> Resdis 채널 레이어 <> consumer <> 브라우
+> 1대1 채팅 구현
+> Realtime protocol로 화상채팅 구현 가능
+
+1. ASGI
+	- 비동기 ; 병렬처리, 순서가 따로 없음
+	- 
+
+Redis 대체 나중에 docker로 사용
+- redis가 room 역할을 해줌. room layer
+- 메시지 서버 역할은 channels
+- 교통정리(어떤 메시지가 어느 룸으로 가야하는지); 메시지 브로커 ; redis 역할
+
+MSA 기술
+- docker 이용해서 가능. 1,2 ... 번 서버에 DB, 사용 language 따로 있어도 한 곳에서 구동할 수 있음
+- 기능이 생길 때마다 새로운 서버 생성
+- 모듈 형태
+- 다른 서버끼리 채팅 이어주는게 메세지 브로커
+
+asgi.py : 비동기 처리
+wsgi.py 비동기
+
+
+pip install daphne
+daphne mysite.asgi:application
+
+---
+정리
+- Redis : 중개자 역할
+
+1. 가상환경 설정
+2. 필요 패키지 설치
+	- django, channels, channels_redis
+3. settings.py 설정
+```
+INSTALLED_APPS = [
+    ...
+    'channels',
+    'chat',  # ← 생성한 앱
+]
+
+ASGI_APPLICATION = 'mysite.asgi.application'
+
+# Redis 백엔드 설정 (Redis가 localhost:6379에 있어야 함)
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    },
+}
+```
+4. ASGI 설정
+
+---
+ORM
+
+카디널리티
+
+실습
+
+---
+api 
+OS 8계층에서 전송계층에서 세션 계층으로 보낼 때 api를 사용. 사실 명확히 구분되지 않는다. api를 비유하자면 우편으로 보낼 때, 어떻게 포장 방법이 api이다.
+다른 계층으로 가면 api 역할하는 얘들의 명칭이 바뀐다. 그리고 api는 여러 방법 중 하나이다.
+라우터...
+프로토콜 (웹 프로그래밍은 http)는 우편을 보낼 때 우표이다.
+---
+### 팀 프로젝트 >> 포트폴리오화
+이론 하나 배우고 나면 미니 프로젝트 만들기.
+소스 코드는 깃 허브에 저장. README.md 파일을 잘 꾸민다 >> 보고서 산출물이 된다. 작성법, 예시 찾아보자. 사이트 느낌으로. 시연영상 유튜브에 이어놓기.
+
+ui/ux 설계
+DB
+코딩
+
