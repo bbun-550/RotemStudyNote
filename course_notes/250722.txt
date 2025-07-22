@@ -1,0 +1,53 @@
+250722
+
+`git pull` 또는 `git merge`할 때 에러 발생시 ; 문구 `Pull is not possible because you have unmerged files`
+1. `git status` 상태 확인
+	- 원인 : 로컬이랑 원격에 같은 파일이 있는데 그걸 로컬에서 아직 머지가 잘 안됐다고 인식하는 것.
+2. `git commit am "커밋 메세지"`
+
+---
+[개발 프로세스](https://husky-stitch-bf3.notion.site/UIKit-1b3a3ca97a408007ac14f550dc713aef)
+>1. 주제설정
+>2. 사용자 그룹 분석
+>3. 사용자 요구사항 분석
+>4. 기능 설계
+>5. 시스템 구성 설계
+>6. UI/UX설계
+>7. DB설계
+>8. 코딩
+>9. 테스트
+>10. 배포 및 유지
+
+
+
+---
+heroku에서 환승할 때가 됐다 > Render 또는 Railway
+	- 수익 창출용으로 사용하라.
+
+FAST api 추천
+
+코딩하는 것보다, 생성형 AI를 적극적으로 활용
+중요한 것은 아이디어, 전체적인 것을 보는 안목
+토론시 ; 기술적인 것에 매몰되지 말고 큰 그림
+
+---
+순환 참조
+
+다대다 
+서로를 참조하는 관계
+- Django : `models.ManyToManyField`
+
+---
+시험문제
+10문제
+
+html 1 ; 기본 tag 앵커 헤딩 image
+css 1 ; 속성 font-family, width, height, bg-color
+js 2 ; 변수 선언 방법(var, const, let, function)  // 함수 선언 방법
+장고 4 ; mtv 패턴 설명(뭐야 설명) // view 호출되고 나서 마지막에 어떤게 호출(render, redirect) // model 클래스 상속 받아야함(models.py 상속) // urls.py 에 대해서 아는대로 설명하시오. {연습장 활용}
+
+코딩 직접
+js 1 ; 버튼 이벤트 핸들러 처리 dom
+django 1 ; 뷰 함수에서 httpresponse, urls.py 에서 path 사용, views안에 hello.view라고 했을 때 httpresponse 사용하는 방법
+	urls.py에서 path 사용하는 방법
+
