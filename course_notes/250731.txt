@@ -151,6 +151,11 @@ $$
 	- 단, 데이터 타입 일치해야함
 
 ---
+예습
+[python에 numpy, scipy, pandas, matplotlib 설치](https://cafe.daum.net/flowlife/SBU0/5?svc=toprank)
+
+
+---
 내일
 내적 연산 inner product
 - 벡터
