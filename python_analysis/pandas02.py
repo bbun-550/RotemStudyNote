@@ -37,9 +37,48 @@ df = DataFrame(np.arange(12).reshape(4,3), index=['1월', '2월','3월','4월'],
 print(df)
 print('-'*40)
 print(df['강남'] > 3) # True, False 출력
+# 1월    False
+# 2월    False
+# 3월     True
+# 4월     True
+# Name: 강남, dtype: bool
+
 print('-'*40)
 print(df[df['강남'] > 3]) # 조건 부합하는 값 출력
+#     강남  강북  서초
+# 3월   6   7   8
+# 4월   9  10  11
+print('-'*40)
 
+'''
+복수 인덱싱
+loc() : 라벨 지원(문자로 인덱싱할 수 있다), 숫자 안씀
+iloc() : 숫자 지원
+'''
+print(df.loc[:'2월']) # 2월 이하 나와
+#     강남  강북  서초
+# 1월   0   1   2
+# 2월   3   4   5
 
+print(df.loc[:'2월', ['서초']]) # 2월 이하 서초만 보고싶어
+#     서초
+# 1월   2
+# 2월   5
 
+print(df.iloc[2]) # 2행을 출력해라
+print(df.iloc[2, :]) # 2행의 모든 열을 출력해라
+# 강남    6
+# 강북    7
+# 서초    8
 
+print(df.iloc[:3]) # 3행 미만 출력해라
+#     강남  강북  서초
+# 1월   0   1   2
+# 2월   3   4   5
+# 3월   6   7   8
+
+print(df.iloc[:3, 2], type(df.iloc[:3, 2])) # 3행 미만 2열만 출력해라
+# 1월    2
+# 2월    5
+# 3월    8
+# Name: 서초, dtype: int64 <class 'pandas.core.series.Series'>
