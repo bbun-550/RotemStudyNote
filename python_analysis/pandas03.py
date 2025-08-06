@@ -79,7 +79,8 @@ print(df.dropna(how='all'))
 # 1  7.0 -4.5
 # 3  0.5 -1.0
 
-print(df.dropna(subset=['one'])) # one이라는 열에 NaN이 있으면 날려버린다
+print(df.dropna(subset=['one']))
+print(df.info()) # one이라는 열에 NaN이 있으면 날려버린다
 #    one  two
 # 0  1.4  NaN
 # 1  7.0 -4.5
