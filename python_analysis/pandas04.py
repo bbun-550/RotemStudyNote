@@ -65,16 +65,18 @@ pandas 문제 3)
 df3 = pd.DataFrame(np.random.randint(1,20,15).reshape(5,3), columns=['A', 'B', 'C'], index=['r1', 'r2', 'r3', 'r4', 'r5'])
 print(df3)
 
-print(df3[df3 > 10])
+print(df3[df3['A'] > 10])
 
 df3['D'] = df3['A']+df3['B']
 print(df3)
 
 df3 = df3.drop('r3', axis='index')
+# q3_frame.drop('r3', inplace=True)
 print(df3)
 
-r6 = pd.Series({'A':15,'B':10,'C':2,'D': 25})
-df3.loc[4] = r6
+# r6 = pd.Series({'A':15,'B':10,'C':2,'D': 25})
+df3.loc['r6'] = [15, 10, 2, 15+10]
+# df3 = df3.rename(index={4:'r6'})
 print(df3)
 
 '''
@@ -119,12 +121,10 @@ print(df4.iloc[1])
 print(df4.drop('p3', axis=0))
 print(df4, type(df4))
 
-p5 ={'상품명':'USB메모리', '가격':15000,'재고':10, '총가격':15000*10}
-df4 = df4.append(p5)
-print(df4)
 
-p5 = pd.Series({'상품명':'USB메모리', '가격':15000,'재고':10, '총가격':15000*10})
-df4.loc[4] = p5
+# p5 = pd.Series({'상품명':'USB메모리', '가격':15000,'재고':10, '총가격':15000*10})
+df4.loc['p5'] = ['USB메모리', 15000, 10, 15000*10]
+# df4 = df4.rename(index={4:'p5'})
 print(df4)
 
 
