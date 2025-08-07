@@ -9,7 +9,6 @@ sauce_url = 'https://www.goobne.co.kr/menu/menu_list_p?classId=18&classId2={}&it
 
 
 datas = []
-type = 0
 
 # 치킨
 for page in [2,7,27]:
