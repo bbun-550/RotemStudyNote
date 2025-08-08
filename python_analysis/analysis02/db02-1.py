@@ -95,9 +95,10 @@ finally:
 '''
 try:
     cursor = conn.cursor()
-    no = int(input('사원번호 입력:'))
-    name = input('이름 입력:')  
+    no = int(input('사원번호 입력:')) # 사원번호 입력
+    name = input('이름 입력:') # 이름 입력
 
+    # DB에 직접 입력받은 no, name로 검색
     sql_login = """
         select jikwonno, buser.busername, jikwonname, jikwonjik, buser.busertel, jikwongen
         from jikwon inner join buser
