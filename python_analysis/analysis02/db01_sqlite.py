@@ -47,6 +47,9 @@ pdata = {
     'weight':[1.5,5.5,10.0],
     'price':[500,1000,15000]
 }
+
+# print(type(pdata)) # <class 'dict'>
+
 frame = pd.DataFrame(pdata) # df 만들기만 함 >> DB에 넣을 차례
 # print(frame)
 #   product maker  weight  price

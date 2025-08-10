@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-plt.rc('font', family='Malgun Gothic')  # 윈도우: 'Malgun Gothic'
+plt.rc('font', family='applegothic')  # 윈도우: 'Malgun Gothic'
 plt.rcParams['axes.unicode_minus'] = False     # 마이너스(-) 깨짐 방지
 
 plt.style.use('ggplot') # R ggplot을 python에서 구현

@@ -11,7 +11,7 @@ import seaborn as sns
 # - 봉구스밥버거의 메뉴 정보는 동적으로 로딩되는 웹 페이지로, 일반적인 HTTP 요청으로는 HTML 소스를 가져올 수 없습니다.
 # - 따라서, 셀레니움을 사용하여 실제 브라우저를 통해 페이지를 로드하고, 필요한 데이터를 추출해야 합니다.
 
-matplotlib.rc('font', family='Malgun Gothic')  # 윈도우: 'Malgun Gothic'
+matplotlib.rc('font', family='apple gothic')  # 윈도우: 'Malgun Gothic'
 plt.rcParams['axes.unicode_minus'] = False     # 마이너스(-) 깨짐 방지
 
 # 0. 필요사항
@@ -23,7 +23,7 @@ plt.rcParams['axes.unicode_minus'] = False     # 마이너스(-) 깨짐 방지
 # - (터미널) 아나콘다 자동 활성화 비활성화 명령어: conda config --set auto_activate_base false
 
 # 1. 크롬 드라이버 경로 지정 (chromedriver.exe 위치에 맞게 수정)
-chrome_path = r"C:\Users\acorn\chromedriver-win64\chromedriver.exe"
+chrome_path = r"/Users/bunny/Documents/chromedriver"
 service = Service(chrome_path)
 options = webdriver.ChromeOptions()
 options.add_argument('--headless')  # 창 안 띄우고 실행

@@ -5,23 +5,29 @@ pandas 문제 7)
     - DataFrame의 자료를 파일로 저장
     - 부서명별 연봉의 합, 연봉의 최대/최소값을 출력
     - 부서명, 직급으로 교차 테이블(빈도표)을 작성(crosstab(부서, 직급))
-    - 직원별 담당 고객자료(고객번호, 고객명, 고객전화)를 출력. 담당 고객이 없으면 "담당 고객  X"으로 표시
+    - (help)직원별 담당 고객자료(고객번호, 고객명, 고객전화)를 출력. 담당 고객이 없으면 "담당 고객  X"으로 표시
     - 부서명별 연봉의 평균으로 가로 막대 그래프를 작성
 '''
+import pymysql # 맥북에서 실행시 필요
+pymysql.install_as_MySQLdb() # 맥북에서 실행시 필요
+
 import MySQLdb
 import numpy as np
 import pandas as pd
+from pandas import Series
 import matplotlib.pyplot as plt
+plt.rc('font', family='applegothic')  # 윈도우: 'Malgun Gothic'
+plt.rcParams['axes.unicode_minus'] = False     # 마이너스(-) 깨짐 방지
 
 conn = MySQLdb.connect( # connect는 아래와 같은 형식을 입력받는다
     host='127.0.0.1',
     user='root',
-    password='12345',
+    password='1234',
     database='mydb',
     port=3306,
-    charset='utf8'
+    charset='utf8mb4'
 )
-
+'''
 try:    
     cursor = conn.cursor()
 
@@ -39,22 +45,28 @@ try:
     # df.to_csv('jikwon_info.csv', header=None)
 
     df11 = df.groupby(['busername'])['jikwonpay']
-    print('부서별 연봉의 합 :', df11.sum())
+    result = df11.agg(['sum','max','min'])
+    print('부서별 연봉의 합 :\n', result)
 
     ctab = pd.crosstab(df['busername'],df['jikwonjik'], margins=True)
     print(ctab)
     print('='*50)
     sql_gogek = """
-        select jikwonname, jikwonno, gogekname, gogektel, gogekjumin, gogekdamsano
-        from jikwon inner join gogek
-        on jikwon.jikwonno=gogek.gogekdamsano
+        select j.jikwonname, g.gogekno, g.gogekname, g.gogektel
+        from jikwon as j left join gogek as g
+        on j.jikwonno=g.gogekdamsano
     """
     cursor.execute(sql_gogek)
-    for (a,b,c,d,e,f) in cursor:
-        print(a,b,c,d,e,f)
-
-    print(df11.mean())
-    plt.barh(df11.mean(), labels=df11)
+    gogek_list = []
+    for (a, b, c, d) in cursor:
+        gogek_list.append([a, b, c, d])
+    gogek_df = pd.DataFrame(gogek_list, columns=['직원명', '고객번호', '고객명', '고객 전화번호'])    
+    gogek_df['담당고객'] = gogek_df['고객명'].fillna('X')    
+    print(gogek_df[['직원명', '담당고객']])
+    
+    buser_mean = df11.mean()
+    print(buser_mean)
+    plt.barh(buser_mean.index, buser_mean.values)
     plt.show()
 
 except Exception as e:
@@ -63,16 +75,7 @@ except Exception as e:
 finally:
     cursor.close()
     conn.close()
-
-
-
-
 '''
-직원별 담당 고객자료(고객번호, 고객명, 고객전화)를 출력. 담당 고객이 없으면 "담당 고객  X"으로 표시
-부서명별 연봉의 평균으로 가로 막대 그래프를 작성
-'''
-
-
 
 '''
  b) MariaDB에 저장된 jikwon 테이블을 이용하여 아래의 문제에 답하시오.
@@ -80,7 +83,45 @@ finally:
      - 성별(남, 여) 연봉의 평균으로 시각화 - 세로 막대 그래프
      - 부서명, 성별로 교차 테이블을 작성 (crosstab(부서, 성별))
 '''
-
+try:
+    with conn:
+        cursor = conn.cursor()
+        
+        sql="""
+            select jikwonno, jikwonname, busername,jikwonpay, jikwonjik, jikwongen
+            from jikwon inner join buser
+            on jikwon.busernum=buser.buserno       
+        """
+        cursor.execute(sql)
+        
+        df_b = pd.DataFrame(cursor.fetchall(), columns=['jikwonno', 'jikwonname', 'busername','jikwonpay','jikwonjik', 'jikwongen'])
+        
+        # print(df_b)
+        pivot_t = df_b.pivot_table(index=['jikwongen'],values=['jikwonpay'],aggfunc='mean')
+        print(pivot_t)
+        
+        # pivot_table 계속 쓰는 방법
+        pivot_plot = df_b.pivot_table(index='jikwongen', values='jikwonpay', aggfunc='mean')
+        plt.bar(pivot_plot.index, pivot_plot['jikwonpay'].values)
+        plt.title('성별 평균 연봉')
+        plt.xlabel('성별')
+        plt.ylabel('평균 연봉')
+        
+        # plt.bar(df_b['jikwongen'],df_b['jikwonpay'].mean()) # y값이 전체 데이터의 평균만 계산. 그래서 막대 길이가 같음
+        ## pivot_table 이어서 사용 또는 groupby 사용
+        ### gender_mean = df_b.groupby('jikwongen')['jikwonpay'].mean()
+        
+        # plt.title('성별 평균 연봉')
+        # plt.xlabel('성별')
+        # plt.ylabel('평균 연봉')
+        # plt.tight_layout()
+        plt.show()
+        
+        ctab = pd.crosstab(df_b['busername'],df_b['jikwongen'])
+        print(ctab)
+    
+except Exception as e:
+    print(f'오류 발생 : {e}')
 
 
 
