@@ -1,0 +1,94 @@
+250811
+
+예습
+p-value : 정의 내릴 수 있어야함
+가설검정
+
+
+>실습파일
+>[[django1]] : iris 데이터 웹에 출력
+>[[django2_chart]] : 동적 차트 웹에 출력
+
+
+---
+### 과제 리뷰
+- 7_a
+- sql : join에 대한 이해 필요. 정렬 order by
+- pandas에 read_sql() 또는 fetchall()
+```python
+# 저장 방법
+ #A2 : DataFrame의 자료를 파일로 저장
+with open('IHateNamingFiles.csv', mode = 'w', encoding='utf-8') as obj: #쓰기모드(w), utf8 인코딩(한글문제)으로 새로운 CSV 파일 읽어오기
+	writer = csv.writer(obj)
+        for r in cursor:
+		writer.writerow(r)
+```
+- `filterDF['연봉']` :
+- `sql2 = where` 활용해서 작성할 수 있다.
+```python
+#A5 : 직원별 담당 고객자료(고객번호, 고객명, 고객전화)를 출력. 담당 고객이 없으면 "담당 고객  X"으로 표시
+
+sql = SELECT gogekno, gogekname, gogektel, gogekdamsano
+        FROM gogek
+```
+- 추가 팁 : 메모리 누수 막는 법은 cursor.close()
+
+---
+### 분석한 데이터 웹django로 출력
+- mainapp : root 어플리케이션
+
+1. `startapp myapp`
+2. `setting.py`
+	- Installed app
+	- TEMAPLATES =  `"DIRS": [BASE_DIR / 'templates'],`
+	- `STATIC_URL='static/'`, `STATICFILES_DIR = [BASE_DIR / 'static']`
+	- ![[django_settingpy.png]]
+
+새로고침으로 ajax 여부 확인할 수 있음
+	- ajax 썼다?
+
+static 파일 : 이미지, js, css ... 리소스 저장하는 파일
+
+html
+- `{% load static %}` : 정적 파일을 불러오겠다.
+
+- `{{table | safe}}`
+
+- `<img src="{% static img_relpath %}" alt="">` 
+	- alt 는 출력되지 않았을 때 대체
+
+[JS 시각화 라이브러리](https://cafe.daum.net/flowlife/QbpR/65?svc=toprank)
+참고 : 자바스크립트 시각화 라이브러리 중 일반적으로 많이 쓰이고 + 사용법이 쉬운 범주로 보면 아래 3개가 대표적이다.
+  - 가장 단순하고 배우기 쉬움 → Chart.js
+  - 다양한 차트 + 대량 데이터 처리 강점 → ECharts
+  - 스프레드시트나 구글 서비스와 연계 → Google Charts
+
+
+포트넘버 3306 8080 1~1024 쓰면 안됨
+
+#### django2_chart
+
+
+- index.html
+	- `<a>` 만드는 2가지 방법
+	1. `<a href="/show">` : 직접 링크 연결해서 사용. client side script
+	2. `<a href="{% url 'show' %}">` : url pattern 사용(두 번째 방법을 선호). 장고 템플릿 엔진 사용(실행되는 곳이 다름). 서버에서 만들어서 브라우저로 보냄. server side script
+> 브라우저 : html 해석기
+
+
+
+dt. 
+- %Y : year
+- %m : month
+- %d : day
+- %H : hour
+- %M
+- %S
+
+
+---
+데이터 모델링
+
+주제정의 필요 이유
+1. 데이터의 체계적 분류
+

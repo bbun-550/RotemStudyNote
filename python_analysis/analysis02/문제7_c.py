@@ -11,13 +11,13 @@ import pandas as pd
 conn = MySQLdb.connect(
     host='127.0.0.1',
     user='root',
-    password='1234',
+    password='12345',
     database='mydb',
     port=3306,
     charset='utf8'
 )
 
-try:    
+try:
     cursor = conn.cursor()
     no = int(input('사원번호 입력:')) # 사원번호 입력
     name = input('이름 입력:') # 이름 입력
@@ -53,10 +53,8 @@ try:
 
 except MySQLdb.OperationalError as e: # DB접속, 인증, 네트워크 문제
     print(f'문제(2) 발생: {e}')
-
 except Exception as e:
     print(f'문제 발생 :{e}')
-
 finally:
     cursor.close()
     conn.close()

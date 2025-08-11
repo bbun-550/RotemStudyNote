@@ -1,6 +1,6 @@
 # pip install mysqlclient
-import pymysql
-pymysql.install_as_MySQLdb()
+# import pymysql
+# pymysql.install_as_MySQLdb()
 import MySQLdb
 import numpy as np
 import pandas as pd

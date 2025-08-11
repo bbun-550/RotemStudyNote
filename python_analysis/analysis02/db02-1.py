@@ -8,28 +8,29 @@ pandas 문제 7)
     - (help)직원별 담당 고객자료(고객번호, 고객명, 고객전화)를 출력. 담당 고객이 없으면 "담당 고객  X"으로 표시
     - 부서명별 연봉의 평균으로 가로 막대 그래프를 작성
 '''
-import pymysql # 맥북에서 실행시 필요
-pymysql.install_as_MySQLdb() # 맥북에서 실행시 필요
+# import pymysql # 맥북에서 실행시 필요
+# pymysql.install_as_MySQLdb() # 맥북에서 실행시 필요
 
 import MySQLdb
 import numpy as np
 import pandas as pd
 from pandas import Series
 import matplotlib.pyplot as plt
-plt.rc('font', family='applegothic')  # 윈도우: 'Malgun Gothic'
+plt.rc('font', family='Malgun Gothic')  # 윈도우: 'Malgun Gothic', Mac: applegothic
 plt.rcParams['axes.unicode_minus'] = False     # 마이너스(-) 깨짐 방지
 
 conn = MySQLdb.connect( # connect는 아래와 같은 형식을 입력받는다
     host='127.0.0.1',
     user='root',
-    password='1234',
+    password='12345',
     database='mydb',
     port=3306,
     charset='utf8mb4'
 )
+
 '''
 try:    
-    cursor = conn.cursor()
+    cursor = conn.cursor() # cursor 객체를 만들면 sql 명령문을 입력할 수 있다
 
     sql="""
         select jikwonno, jikwonname, busername,jikwonpay, jikwonjik
@@ -83,6 +84,7 @@ finally:
      - 성별(남, 여) 연봉의 평균으로 시각화 - 세로 막대 그래프
      - 부서명, 성별로 교차 테이블을 작성 (crosstab(부서, 성별))
 '''
+
 try:
     with conn:
         cursor = conn.cursor()
