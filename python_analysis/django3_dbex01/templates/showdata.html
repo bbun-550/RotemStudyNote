@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>templates/showdata.html</title>
+</head>
+<body>
+    <a href="{% url 'index' %}">첫 화면으로</a>
+    <h2>문제 1</h2>
+    <div>
+        {{sorted_df | safe}}
+    </div>
+    <hr>
+    <h2>문제3</h2>
+    <p>{{ img_showpath1 }}</p>
+    <img src="{% static img_showpath %}" alt="bar chart" style="width: 500;">
+    <h2>문제4</h2>
+    <div>
+        {{df4_html | safe}}
+    </div>
+    
+</body>
+</html>

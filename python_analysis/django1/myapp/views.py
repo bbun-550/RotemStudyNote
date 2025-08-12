@@ -21,7 +21,7 @@ def showdata(request):
     df = sns.load_dataset('iris')
 
     # 이미지 저장 경로를 설정 <BASE_DIR?/static/images/>
-    static_app_dir = Path(settings.BASE_DIR) / 'static' / 'images'
+    static_app_dir = Path(settings.BASE_DIR)/'static'/'images'
     static_app_dir.mkdir(parents=True, exist_ok=True, ) # 부모창 밑에다 만든다, 존재하면 pass 없으면 mkdir
     img_path = static_app_dir/'iris.png'
 
