@@ -34,11 +34,20 @@ std1, std2 = np.std(class1),np.std(class2)
 var1, var2 = np.var(class1),np.var(class2)
 
 print(f'1반 성적\n평균 : {mean1:.2f}\n표준편차 : {std1:.2f}\n분산 : {var1:.2f}\n') # \n{class1}
+# 1반 성적
+# 평균 : 60.00
+# 표준편차 : 9.06
+# 분산 : 82.06
 print(f'2반 성적\n평균 : {mean2:.2f}\n표준편차 : {std2:.2f}\n분산 : {var2:.2f}\n') # \n{class2}
+# 2반 성적
+# 평균 : 59.75
+# 표준편차 : 18.36
+# 분산 : 336.91
 
 # 평균만 보고 성적을 판단하면 안된다
 # 표준편차와 분산을 보고 판단해야 한다
 # 1반은 평균 근처에 골고루 분포되어 있고, 2반은 넓게 퍼져있다
+# 수치만으로는 부족하다. 시각화 필요!
 
 df = pd.DataFrame({
     'Class':['1반']*100 + ['2반']*100,
@@ -53,3 +62,31 @@ print(df.tail(2))
 #     Class  Store
 # 198    2반     61
 # 199    2반     37
+
+# df.to_csv('desc_std_1.csv', index=False, encoding='utf-8')
+
+# 시각화 : 산포도
+x1 = np.random.normal(1, 0.05,size=100)
+x2 = np.random.normal(2, 0.05, size=100)
+
+plt.figure(figsize=(10,6))
+plt.scatter(x1, class1, label=f'1반 (평균={mean1:.2f}, σ={std1:.2f})')
+plt.scatter(x2, class2, label=f'2반 (평균={mean2:.2f}, σ={std2:.2f})')
+plt.hlines(target_mean, 0.5, 2.5, colors='red', linestyles='dashed',label=f'공통평균={target_mean:.2f}')
+plt.title('동일 평균, 다른 성적 분포를 가진 두 반 비교')
+plt.xticks([1,2], ['1반', '2반'])
+plt.ylabel('시험 점수')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# 시각화 : boxplot
+plt.figure(figsize=(10,6))
+plt.boxplot([class1, class2], label=['1반','2반'])
+plt.title('성적 분포를 가진 두 반 비교')
+plt.ylabel('시험 점수')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+plt.close()
