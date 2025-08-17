@@ -64,7 +64,7 @@ sdata = pd.read_csv('https://raw.githubusercontent.com/pykwon/python/refs/heads/
 # 어떤 음료가 기대보다 많이 선택했는지
 import matplotlib.pyplot as plt
 import numpy as np
-plt.rc('font', family='malgun gothic')
+plt.rc('font', family='applegothic') # malgun gothic'
 plt.rcParams['axes.unicode_minus'] = False
 
 # 기대도수 계산
@@ -84,8 +84,8 @@ plt.xlabel('음료종류')
 plt.ylabel('도수')
 plt.legend()
 plt.grid(axis='y', linestyle='--', alpha=0.4)
-# plt.show()
-# plt.close()
+plt.show()
+plt.close()
 
 # 그래프와 카이제곱 검정 결과를 바탕으로 어떤 음료가 더 인기 있는지 구체적으로 분석
 # 총합과 기대도수 이미 구함. 밋밋한 DataFrame에 데이터 추가.
@@ -101,7 +101,7 @@ sdata['차이비율(%)'] = round(sdata['차이(관측-기대)'] / expected * 100
 
 sdata.sort_values(by='차이(관측-기대)', ascending=False, inplace=True) # by : 기준이 누구야, 내림차순
 sdata.reset_index(drop=True, inplace=True) # 설정 인덱스를 제거하고 기본 인덱스(0,1,2, ... , n)으로 변경하는 메서드
-print(sdata.head(3))
+# print(sdata.head(3))
 #   음료종류  관측도수  기대도수  차이(관측-기대)  차이비율(%)
 # 0   s4    71       50.8       20.2          39.76
 # 1   s5    61       50.8       10.2          20.08

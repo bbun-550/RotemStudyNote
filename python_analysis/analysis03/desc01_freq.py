@@ -6,7 +6,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-plt.rc('font', family='malgun gothic')
+plt.rc('font', family='applegothic') # malgun gothic
 plt.rcParams['axes.unicode_minus'] = False
 
 # Step 1 : 데이터를 읽어서 DataFrame에 저장
@@ -82,7 +82,7 @@ print(dist_table)
 
 
 # step 9 : 히스토그램 그리기
-plt.figure(figsize=(8,5))
+plt.figure(figsize=(9,5))
 plt.bar(dist_table['계급값'], dist_table['도수'], width=5, 
         color='cornflowerblue', edgecolor='black')
 plt.title('학생 50명 키 히스토그램', fontsize=16)

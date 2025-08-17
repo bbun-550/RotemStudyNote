@@ -6,7 +6,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-plt.rc('font', family='malgun gothic')
+plt.rc('font', family='applegothic') # malgun gothic
 plt.rcParams['axes.unicode_minus'] = False
 
 np.random.seed(42)

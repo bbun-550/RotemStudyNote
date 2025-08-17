@@ -46,7 +46,7 @@ for title in soup.findAll('h4', class_='tit'):
         pass
 
 # print(msg) # 가져왔으니까 이제 가공
-
+'''
 from konlpy.tag import Okt
 from collections import Counter # 단어 개수 세는 용도
 
@@ -74,7 +74,7 @@ taglist = pytagcloud.make_tags(tag, maxsize=100)
 pytagcloud.create_tag_image(taglist, 'word.png', size=(1000,600), 
                             background=(0,0,0), rectangular=False,
                             fontname='Malgun') # 이미지로 저장. 꼭 fontname= 지정해줘야함
-
+'''
 # 이미지 읽기
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
