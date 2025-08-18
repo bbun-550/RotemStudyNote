@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>* 커피 전문전에 대한 소비자 인식 결과 *</h3>
+    {% if crossTb1 %}
+        {{crossTb1 | safe}}
+    {% endif %}
+    <br>
+    {% if results %}
+        {{results | safe}}
+    {% endif %}
+    <br>
+    <!-- "/static/images/cobar.png 경로 넣어줘도 된다" -->
+    <img src="{% static static_img_path %}" width="40%">
+    <hr>
+    <a href="/coffee/survey">다시 설문조사</a>&nbsp;&nbsp;
+    <a href="/">메인으로</a>
+    <hr>
+    참고 : DataFrame 출력 : <br>
+    {% if df %}
+        {{df | safe}}
+    {% endif %}
+</body>
+</html>

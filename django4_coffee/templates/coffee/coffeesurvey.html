@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>templates > coffee > coffeesurvey.html</title>
+</head>
+<body>
+    <h3>*커피 전문점에 대한 소비자 인식 조사*</h3>
+    <!-- post할 때 token 패킹 해줘야 한다. 위조방지용이다. get방식일 때는 사용하지 않는다.
+     이유 : settings.py에 자동으로 csrf 자동 적용. 클라이언트가 요청을 하면 ... -->
+    <form action="/coffee/surveyprocess/" method="post">{% csrf_token %}
+        <table>
+            <tr>
+                <td>귀하의 성별은?</td>
+                <td>
+                    <label for="genM">남</label>
+                    <input type="radio" name="gender" id="gender" value="남" checked>&nbsp;&nbsp;
+                    <label for="genF">여</label>
+                    <input type="radio" name="gender" id="gender" value="여">&nbsp;&nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td>귀하의 나이은?</td>
+                <td>
+                    <label for="age10">10대</label>
+                    <input type="radio" name="age" id="age10" value="10" checked>&nbsp;&nbsp;
+                    <label for="age20">20대</label>
+                    <input type="radio" name="age" id="age20" value="20" >&nbsp;&nbsp;
+                    <label for="age30">30대</label>
+                    <input type="radio" name="age" id="age30" value="30">&nbsp;&nbsp;
+                    <label for="age40">40대</label>
+                    <input type="radio" name="age" id="age40" value="40">&nbsp;&nbsp;
+                    <label for="age50">50대 이상</label>
+                    <input type="radio" name="age" id="age50" value="50">&nbsp;&nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td>선호하는 커피전문점은?</td>
+                <td>
+                    <label for="starbucks">스타벅스</label>
+                    <input type="radio" id="starbucks" name="co_survey" value="스타벅스" checked>&nbsp;&nbsp;
+                    <label for="coffeebean">커피빈</label>
+                    <input type="radio" id="coffeebean" name="co_survey" value="커피빈">&nbsp;&nbsp;
+                    <label for="ediya">이디아</label>
+                    <input type="radio" id="ediya" name="co_survey" value="이디아">&nbsp;&nbsp;
+                    <label for="tomntoms">탐앤탐스</label>
+                    <input type="radio" id="tomntoms" name="co_survey" value="탐앤탐스">&nbsp;&nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <br>
+                    <input type="submit" value="설문완료">
+                    <!-- 완료 누르면 db로 저장 -->
+                    <input type="reset" value="초기화">
+
+                </td>
+            </tr>
+        </table>        
+    </form>
+</body>
+</html>
