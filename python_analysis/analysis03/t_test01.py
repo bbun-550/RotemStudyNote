@@ -33,10 +33,10 @@ result = stats.ttest_1samp(one_sample, popmean=177.0) # popmean : 모수 평균,
 # 결론 : p-value 0.60847 > 유의수준 0.05 이므로 귀무가설 채택.
 
 # 시각화
-sns.displot(one_sample, bins=4, kde=True, color='blue')
+# sns.displot(one_sample, bins=4, kde=True, color='blue')
 # plt.boxplot(one_sample)
-plt.xlabel('data')
-plt.ylabel('count')
+# plt.xlabel('data')
+# plt.ylabel('count')
 # plt.show()
 # plt.close()
 
@@ -69,7 +69,7 @@ data = pd.read_csv('https://raw.githubusercontent.com/pykwon/python/refs/heads/m
 # wilcoxon signed-rank test는 정규성을 가정하지 않는다.
 from scipy.stats import wilcoxon
 wilcoxon_res = wilcoxon(data.국어 - 80) # 평균 80과 비교
-print(f'wilcox : {wilcoxon_res[1]:.5f}') # pvalue 0.39778 > 0.05 귀무가설 채택
+# print(f'wilcox : {wilcoxon_res[1]:.5f}') # pvalue 0.39778 > 0.05 귀무가설 채택
 
 
 res = stats.ttest_1samp(data.국어, popmean=80) # 얘만 쓰면 보고서가 빈약하기 때문에 wilcoxon 등 추가 활용해서 썰을 풀어준다.
@@ -82,3 +82,52 @@ res = stats.ttest_1samp(data.국어, popmean=80) # 얘만 쓰면 보고서가 �
 # 해석 : 정규성은 부족하지만, t-test와 wilcoxon은 같은 결론에 도달했다. (표본이 커지면 달라질 수 있음)
 # 표본 수가 커지면 결과는 달라질 수 있다. 정규성 위배가 있어도 t-test 결과를 신뢰할 수 있다.
 
+'''
+실습예제 3
+# 여아 신생아 몸무게의 평균 검정수행 -  babyboom.csv
+# 여아 신생아의 몸무게는 평균이 2800(g)으로 알려져 왔으나 이보다 더 크다는 주장이 나왔다.
+# 표본으로 여아 18명을 뽑아 체중을 측정하였다고 할 때 새로운 주장이 맞는지 검정해보자.
+'''
+# 귀무 가설 : 여아 신생아의 몸무게는 평균 2800g 이다.
+# 대립 가설 : 여아 신생아의 몸무게는 평균 2800g 보다 크다.
+
+data2 = pd.read_csv('https://raw.githubusercontent.com/pykwon/python/refs/heads/master/testdata_utf8/babyboom.csv')
+# print(data2.head(2)) # gender와 weight만 본다.
+# print(data2.describe()) # 기술 통계 요약을 볼 수 있다.
+
+# print(data2['gender'].unique()) # [1 2] 1 - 남아, 2 - 여아
+fdata = data2[data2['gender'] == 1]
+# print('len :',len(fdata))
+# print(f'평균 :{np.mean(fdata['weight'])}\n' # 평균 :3132.4444444444443
+#       f'표준편차 : {np.std(fdata['weight'])}') # 표준편차 : 613.7878951616051
+
+# 3132.44 vs 2800 둘 사이 평균에 차이가 있는가? (통계적으로 검정을 하자)
+# 집단이 하나 일 때는 정규성 검정은 선택이다.
+
+# 정규성 검정
+# print(stats.shapiro(fdata.iloc[:,2])) # 0.05 보다 크면 정규성 만족한다.
+# p-value 0.017984789994719325 < 0.05 이므로 정규성 위배했다.
+
+# 정규성 시각화
+# 1. histogram
+sns.displot(fdata.weight, kde=True)
+plt.show()
+plt.close()
+
+# 2. Q-Q plot (Quantile - Quantile ; 분위수)
+stats.probplot(fdata.iloc[:,2], plot=plt) # probability
+plt.show()
+plt.close()
+# 정규성을 따르지 않는다.
+
+wilcoxon_resbaby = wilcoxon(fdata.weight - 2800) # 평균 2800과 비교
+print(f'wilcox : {wilcoxon_resbaby[1]:.5f}') # 0.03423
+
+resBaby = stats.ttest_1samp(fdata.weight, popmean=2800) # 얘만 쓰면 보고서가 빈약하기 때문에 wilcoxon 등 추가 활용해서 썰을 풀어준다.
+print(f'statistic : {resBaby[0]:.3f}\n' # 2.233
+      f'pvalue : {resBaby[1]:.5f}' # 0.03927
+      )
+
+# 해석 : p-value 0.03927 < 0.05 이므로 귀무가설 기각한다.
+# 즉, 여 신생아의 평균 체중은 2800g 보다 증가했다.
+# 왜? ... 
