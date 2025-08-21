@@ -71,7 +71,7 @@ lmodel = ols('pay ~ C(group)', data=df).fit() # C 연산자를 꼭 써줘야한�
 
 # 결과 : pvalue 0.043589 < 0.05 귀무가설 기각
 
-# 복습 : f-value = SSR/MSE
+# 복습 : f-value = MSR/MSE
 ## 추가 : MSR = SSR / df
 
 

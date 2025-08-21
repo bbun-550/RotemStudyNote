@@ -102,7 +102,7 @@ table = sm.stats.anova_lm(reg, type=2)
 ## SSR : 추세선과 데이터 간의 차이
 ## SSE 잔차에러 : 평균과 데이터 간의 차이
 
-## SSR/MSE = F-value -> p-value
+## MSR/MSE = F-value -> p-value
 
 # 사후검정 post hoc test
 # - 분산분석은 집단의 평균에 차이 여부만 알려줄 뿐, 집단 간의 평균 차이는 알려주지 않는다.
