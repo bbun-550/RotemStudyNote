@@ -25,38 +25,40 @@ print('-' * 100)
 print('실제값 : \n', df.만족도,'\n예측값 : \n',model.predict()[0])   # 3.7359630488589186 
 print('-' * 100)
 
-# 이건 표 볼때만 주석 해제
-# import matplotlib.pyplot as plt
-# plt.rc('font', family = 'Malgun Gothic')
-# plt.scatter(df.적절성, df.만족도)
-# slope, intercept = np.polyfit(df.적절성, df.만족도, 1)
-# plt.plot(df.적절성, df.적절성 * slope + intercept, 'b')
-# plt.show()
+'''
+import matplotlib.pyplot as plt
+plt.rc('font', family = 'Malgun Gothic')
+plt.scatter(df.적절성, df.만족도)
+slope, intercept = np.polyfit(df.적절성, df.만족도, 1)
+plt.plot(df.적절성, df.적절성 * slope + intercept, 'b')
+plt.show()
+'''
 
 #                             OLS Regression Results
 # ==============================================================================
-# Dep. Variable:                    만족도   R-squared:                       0.588
+# Dep. Variable:                    만족도   R-squared:                       0.588 # 설명력
 # Model:                            OLS   Adj. R-squared:                  0.586
 # Method:                 Least Squares   F-statistic:                     374.0
-# Date:                Fri, 22 Aug 2025   Prob (F-statistic):           2.24e-52
-# Time:                        16:00:26   Log-Likelihood:                -207.44
+# Date:                Fri, 22 Aug 2025   Prob (F-statistic):           2.24e-52 # 모델 적합도 확인 pvalue
+# Time:                        16:00:26   Log-Likelihood:                -207.44 # 로지스틱에서 언급 예정
 # No. Observations:                 264   AIC:                             418.9
 # Df Residuals:                     262   BIC:                             426.0
 # Df Model:                           1
 # Covariance Type:            nonrobust
 # ==============================================================================
-#                  coef    std err          t      P>|t|      [0.025      0.975]
+#                  coef    std err          t      P>|t|      [0.025      0.975] # 범위
 # ------------------------------------------------------------------------------
-# Intercept      0.7789      0.124      6.273      0.000       0.534       1.023
-# 적절성            0.7393      0.038     19.340      0.000       0.664       0.815
+# Intercept      0.7789(절편)      0.124      6.273      0.000       0.534       1.023
+# 적절성            0.7393(기울기)      0.038     19.340      0.000(v)    0.664       0.815
 # ==============================================================================
-# Omnibus:                       11.674   Durbin-Watson:                   2.185
-# Prob(Omnibus):                  0.003   Jarque-Bera (JB):               16.003
+# Omnibus:                       11.674   Durbin-Watson:                   2.185 # 2에 근사할 수록 잔차 간 독립성을 입증한다
+# Prob(Omnibus):                  0.003   Jarque-Bera (JB):               16.003 # 적합도
 # Skew:                          -0.328   Prob(JB):                     0.000335
 # Kurtosis:                       4.012   Cond. No.                         13.4
 # ==============================================================================
 
-
+# 일차식이 곧 모델
+# y= 0.7393 * x + 0.7789
 
 # 여기부턴 결과창의 표 설명
 
