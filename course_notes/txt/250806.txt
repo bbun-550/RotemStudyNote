@@ -1,0 +1,62 @@
+250806
+
+함수지향 언어 클래스를 슥 집어넣은 형태
+secure coding(백엔드), 웹표준(프론트엔드)
+	- 가이드라인 맞춰서 개발해야 함
+UXUI : 사용자 경험. 사용자가 누구냐에 따라서 개발하는 것이 중요하다(Target)
+
+정규표현식(교재 부록에 적혀 있음)
+	- 자료를 자유자재로 다룰 수 있음
+	- 데이터 가공에 필연
+```
+. ^ $ * + ? { } [ ] \ | ( )
+```
+
+>실습 파일명
+>pandas04.py : 데이터프레임 병합, merge
+>pandas05.py : file i/o, chunk
+>pandas06.py : pandas로 파일 저장
+>pandas07.py : 웹문서 읽기(웹 크롤링 beautifulsoap)
+
+
+>[!summary] [[pandas04.py|과제]] 리뷰
+>- `.index()` , `.columns()` 로 값 추가할 수 있음
+>- `.drop(, inplace=True/False)` : True원본에 반영한다, False 저장안함
+
+
+---
+#### chunk
+- 부분 부분 잘라서 볼 수 있는 장점
+- 데이터가 너무 클 경우 chunk 활용해서 잘라서 확인
+	- "chunk 단위로 확인한다"라고 말한다
+
+
+오후
+
+#### 웹 크롤링
+- `beautifulsoap`
+
+- BeautifulSoup 모듈이 제공하는 find 함수 종류
+	- `find()`
+	- `find_next()`
+	- `find_all()`
+- select 함수 종류
+	- `select
+
+
+---
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
