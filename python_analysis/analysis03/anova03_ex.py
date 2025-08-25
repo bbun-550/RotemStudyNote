@@ -17,51 +17,11 @@ from statsmodels.stats.multicomp import pairwise_tukeyhsd
 '''
 
 '''
-raw = {'kind':[
-    1,
-    2,
-    3,
-    4,
-    2,
-    1,
-    3,
-    4,
-    2,
-    1,
-    2,
-    3,
-    4,
-    1,
-    2,
-    1,
-    1,
-    3,
-    4,
-    2
-],'quantity':[
-    64,
-    72,
-    68,
-    77,
-    56,
-    'NaN',
-    95,
-    78,
-    55,
-    91,
-    63,
-    49,
-    70,
-    80,
-    90,
-    33,
-    44,
-    55,
-    66,
-    77
-]}
+'''
+raw = {'kind':[1,2,3,4,2,1,3,4,2,1,2,3,4,1,2,1,1,3,4,2],
+       'quantity':[64,72,68,77,56,'NaN',95,78,55,91,63,49,70,80,90,33,44,55,66,77]}
 data = pd.DataFrame(raw)
-# print(data)
+print(data)
 #     kind quantity
 # 0      1       64
 # 1      2       72
@@ -127,7 +87,6 @@ turkyResult = pairwise_tukeyhsd(endog=data.quantity, groups=data.kind)
 # turkyResult.plot_simultaneous(xlabel='mean',ylabel='group')
 # plt.show()
 # plt.close()
-'''
 
 
 '''

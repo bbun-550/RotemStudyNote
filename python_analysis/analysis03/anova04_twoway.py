@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 import scipy.stats as stats
 import matplotlib.pyplot as plt
-plt.rc('font', family='Malgun Gothic')
+plt.rc('font', family='applegothic')
 from statsmodels.formula.api import ols
 from statsmodels.stats.anova import anova_lm
 
@@ -128,7 +128,7 @@ turkyResult2 = pairwise_tukeyhsd(endog=data2.time, groups=data2.treat)
 # (A, B), (B, C) treat(응급처치) 방법과 독퍼짐 시간의 평균에 차이가 있다
 
 # 시각화
-# turkyResult1.plot_simultaneous(xlabel='mean',ylabel='poison')
-# turkyResult2.plot_simultaneous(xlabel='mean',ylabel='treat')
-# plt.show()
-# plt.close()
+turkyResult1.plot_simultaneous(xlabel='mean',ylabel='poison')
+turkyResult2.plot_simultaneous(xlabel='mean',ylabel='treat')
+plt.show()
+plt.close()
