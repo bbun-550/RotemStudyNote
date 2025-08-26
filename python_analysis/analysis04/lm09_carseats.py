@@ -77,7 +77,7 @@ mymodel.predict('~~')
 import joblib
 
 # 저장
-joblib.dump(lmodel, 'mymodel.model')
+joblib.dump(lmodel, 'python_analysis/analysis04/mymodel.model')
 
 # 읽기
 mymodel = joblib.load()
@@ -97,18 +97,20 @@ residual = df_lm.Sales - fitted # 잔차
 '''
 sns.regplot(x=fitted, y=residual, lowess=True, line_kws={'color':'red'}) # lowess 비모수적 추정
 plt.plot([fitted.min(), fitted.max()], [0,0], '--', color='gray')
+plt.title('선형성')
 plt.show()
 plt.close() # 잔차가 일정하게 분포하기 때문에 선형성 만족이다.
 '''
 
 # 2. 정규성 : 잔차항이 정규 분포를 따라야 한다.
 # QQ plot 출력 다른 방법
-'''
 import scipy.stats as stats
+'''
 sr = stats.zscore(residual)
 [x,y],_ = stats.probplot(sr)
 sns.scatterplot(x=x,y=y)
 plt.plot([-3,3], [-3,3], '--', color='gray')
+plt.title('정규성')
 plt.show()
 plt.close()
 '''
@@ -124,6 +126,55 @@ import statsmodels.api as sm
 # print(f'Durbin-Watson : {sm.stats.stattools.durbin_watson(residual):.4f}')
 # Durbin-Watson : 1.9315
 
-# 4. 등분산성
+# --------------<25-08-26>---------------
+# 4. 등분산성 Homoscedasticity 等分散性
+# - 독립변수일 때는 확인할 수 없다. 복수일 때 확인할 수 있다.
+# - 그룹간의 분산이 유사해야 한다. 독립변수의 모든 값에 대한 오차들의 분산은 일정해야 한다.
 
-# 5. 다중공산성
+# 시각화
+# 잔차들의 분산은 일정해야 한다. 눈으로 확인하자.
+# 선형성 보듯
+'''
+sr = stats.zscore(residual)
+sns.regplot(x=fitted, y=np.sqrt(abs(sr)), lowess=True, line_kws={'color':'red'}) # lowess 비모수적 추정
+plt.show()
+plt.close()
+'''
+
+# 일반적으로 쓰는 방법
+from statsmodels.stats.diagnostic import het_breuschpagan
+bp_test = het_breuschpagan(residual, lmodel.model.exog) # 잔차와 독립변수 관계 확인. 두개 값을 반환한다.
+# print(f'통계량 : {bp_test[0]:.4f}\npvalue : {bp_test[1]:.4f}')
+# 통계량 : 1.1277
+# pvalue : 0.8899 > 0.05 이므로 등분산성 만족.
+
+
+# 5. 다중공선성
+# - 다중회귀 분석 시 두 개 이상의 독립변수 간에 강한 상관관계가 있어서는 안된다.
+
+# 분산팽창지수 VIF Variance Inflation Factor
+# - 연속형의 경우 10을 넘으면 다중공선성을 의심한다.
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+# 사용하기 위해서 dataframe 필요하다.
+
+imsidf = df[['Income', 'Advertising', 'Price', 'Age']]
+vifdf = pd.DataFrame()
+vifdf['vif_value'] = [variance_inflation_factor(imsidf, i) for i in range(imsidf.shape[1])]
+# print(vifdf)
+#    vif_value
+# 0   5.971040 income
+# 1   1.993726 advertising
+# 2   9.979281 price, 어떤 요소랑 상관관계가 높은가 확인해야 한다. 찾으면 두 요소에 PCA 진행해서 차원축소한다.
+# 3   8.267760 age
+# 모든 독립변수가 VIF 값이 10 미만이므로 다중공선성 문제가 발생하지 않았다.
+
+## 저장된 모델 읽어 새로운 데이터에 대한 예측
+import joblib
+
+ourmodel = joblib.load('python_analysis/analysis04/mymodel.model')
+new_df = pd.DataFrame({'Income':[35,63,25], 'Advertising':[6,3,11], 'Price':[105,88,77], 'Age':[33,55,22]})
+new_pred = ourmodel.predict(new_df)
+print(f'Sales 예측 결과:\n{new_pred}')
+# 0     8.664248
+# 1     8.507928
+# 2    11.296480
