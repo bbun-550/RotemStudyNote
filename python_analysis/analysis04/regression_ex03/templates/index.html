@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>templates > index.html</title>
+</head>
+<body>
+    <h2>회귀분석 문제 4</h2>
+    <hr>
+    <form method="post" action="/result/">
+        {% csrf_token %}
+        <label for="workyear">근속년수</label>
+        <input type="number" name="workyear" id="workyear" value="{{workyear}}" placeholder="7">
+        <button type="submit">확인</button>
+    </form>
+
+    <div name="expectpay" id="expectpay">예상연봉액 : </div>
+    <div name="r2" id="r2">설명력 : </div>
+    
+    <div></div>
+
+    <hr>
+
+    <script>
+        document.getElementById('workyearForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+        fetch('/result/',{
+            method:'POST',
+            headers:{
+                'Accept': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'workyear=' + encodeURIComponent(document.getElementById('workyear').value)
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('expectpay').innerText = '예상연봉액 :  + {{expectpay_result}}';
+            document.getElementById('r2').innerText = '설명력 :  + {{r2_result}}';
+        });
+    });
+    </script>
+</body>
+</html>
