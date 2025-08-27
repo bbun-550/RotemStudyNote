@@ -14,6 +14,7 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
 
 
 data = pd.read_csv('https://raw.githubusercontent.com/pykwon/python/refs/heads/master/testdata_utf8/Consumo_cerveja.csv')
@@ -41,14 +42,39 @@ data['Precipitacao (mm)'] = pd.to_numeric(data['Precipitacao (mm)'], errors='coe
 # print(data['Temperatura Maxima (C)'])
 # data.info()
 
+# 데이터 분할
+train, test = train_test_split(data, test_size=0.3, random_state=1)
+x_train = train[['Temperatura Maxima (C)', 'Precipitacao (mm)']]
+y_train = train['Consumo de cerveja (litros)']
+x_test = test[['Temperatura Maxima (C)', 'Precipitacao (mm)']]
+y_test = test['Consumo de cerveja (litros)']
+
+# 회귀분석 모델 학습
+model = LinearRegression().fit(x_train,y_train)
+
+# 데이터 확인
+print(f'기울기(slope) : {model.coef_}') # 온도 : 0.66700917, 강수 : -0.06191427
+print(f'절편(intercept) : {model.intercept_}')
+
+# 예측
+y_pred = model.predict(x_test)
+print(f'예측결과 : {y_pred[:3]:.3f}')
+print(f'실제값 : {y_test.values[:3]}')
+# 예측결과 : [25.90790217 17.58121347 24.92393349]
+# 실제값 : [24.834 21.294 23.898]
+
+# 모델 평가
+print(f'R2 score(결정계수) : {r2_score(y_test, y_pred):.4f}') # 0.411
+
+'''
 # 데이터 추출
 x1 = data[['Temperatura Maxima (C)']].values
 x2 = data[['Precipitacao (mm)']].values
 y = data['Consumo de cerveja (litros)'].values
 
 # 상관계수 확인
-print('온도 ~ 맥주 상관계수 : %.4f'%(np.corrcoef(x1.flatten(),y)[0,1])) # 0.6427
-print('강수 ~ 맥주 상관계수 : %.4f'%(np.corrcoef(x2.flatten(),y)[0,1])) # -0.1938
+# print('온도 ~ 맥주 상관계수 : %.4f'%(np.corrcoef(x1.flatten(),y)[0,1])) # 0.6427
+# print('강수 ~ 맥주 상관계수 : %.4f'%(np.corrcoef(x2.flatten(),y)[0,1])) # -0.1938
 # 강수와 맥주의 상관관계는 유의하지 않다.
 
 # 모델
@@ -71,4 +97,4 @@ predict2 = lmodel2.predict(x2)
 print(f'강수량으로 예측한 맥주 : {predict2[0]:.4f}')
 print(f'r2_score(결정계수): {r2_score(y, predict2):.4f}') # 0.0376 => 3.76% 설명해주고 있다.
 print(f'MSE(평균제곱오차): {mean_squared_error(y, predict2):.4f}') # 18.5747
-
+'''
