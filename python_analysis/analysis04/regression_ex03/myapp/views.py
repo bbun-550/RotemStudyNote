@@ -12,7 +12,7 @@ from sklearn.metrics import r2_score
 def Index(request):
     return render(request, 'index.html')
 
-@csrf_exempt
+# @csrf_exempt
 def Result(request):
     workyear = request.POST.get('workyear','').strip()
     try:
@@ -55,8 +55,3 @@ def Result(request):
         'r2_result':np.round(r2*100,2),
     }
     return JsonResponse(context_dict)
-
-
-
-# def Result(request):
-#     return render(request, 'result.html')

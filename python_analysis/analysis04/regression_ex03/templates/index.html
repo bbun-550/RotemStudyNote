@@ -3,43 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>templates > index.html</title>
+    <title>templates index.html</title>
 </head>
 <body>
     <h2>회귀분석 문제 4</h2>
     <hr>
-    <form method="post" action="/result/">
+    <form method="post" action="/result/" id="workyearForm">
         {% csrf_token %}
         <label for="workyear">근속년수</label>
-        <input type="number" name="workyear" id="workyear" value="{{workyear}}" placeholder="7">
+        <input type="number" name="workyear" id="workyear" value="{{workyear}}" placeholder="근속년수 입력">
         <button type="submit">확인</button>
     </form>
 
-    <div name="expectpay" id="expectpay">예상연봉액 : </div>
-    <div name="r2" id="r2">설명력 : </div>
-    
-    <div></div>
-
+    <div>
+    <p id="expectpay">예상연봉액 : {{ expectpay_result|default:"-" }}</p>
+    <p id="r2">설명력 : {{ r2_result|default:"-" }}</p>
+    </div>
     <hr>
 
-    <script>
-        document.getElementById('workyearForm').addEventListener('submit', function(e) {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('workyearForm');
+        const expectDiv = document.getElementById('expectpay');
+        const r2Div = document.getElementById('r2');
+
+  if (!form) return;
+
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
-        fetch('/result/',{
-            method:'POST',
-            headers:{
-                'Accept': 'application/json',
-                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'workyear=' + encodeURIComponent(document.getElementById('workyear').value)
-        })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('expectpay').innerText = '예상연봉액 :  + {{expectpay_result}}';
-            document.getElementById('r2').innerText = '설명력 :  + {{r2_result}}';
-        });
+
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const fd = new FormData(form); // workyear 포함
+
+    fetch('/result/', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'X-CSRFToken': csrfToken
+        // Content-Type 생략: FormData가 boundary 포함해 자동 설정
+      },
+      body: fd
+    })
+    .then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(function (data) {
+      // 같은 페이지 일부만 갱신
+      if (typeof data.expectpay_result !== 'undefined') {
+        expectDiv.innerText = '예상연봉액 : ' + Number(data.expectpay_result).toLocaleString() + ' 만원';
+      }
+      if (typeof data.r2_result !== 'undefined') {
+        r2Div.innerText = '설명력 : ' + Number(data.r2_result).toFixed(2) + ' %';
+      }
+    })
+    .catch(function (err) {
+      console.error('요청 실패:', err);
+      expectDiv.innerText = '예상연봉액 : (요청 실패)';
+      r2Div.innerText = '설명력 : (요청 실패)';
     });
-    </script>
+  });
+});
+</script>
 </body>
 </html>
