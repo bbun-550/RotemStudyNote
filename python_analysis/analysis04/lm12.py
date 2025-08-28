@@ -25,11 +25,11 @@ print(f'slope : {lmodel.coef_[0]:.4f}') # 기울기 : -0.0682
 print(f'intercept : {lmodel.intercept_:.4f}') # 절편 : 30.0989
 
 # 시각화
-'''
 plt.scatter(x,y)
 plt.plot(x, lmodel.coef_ * x + lmodel.intercept_, c='r') # 추세선
 plt.show()
 plt.close()
+'''
 '''
 
 # 예측
