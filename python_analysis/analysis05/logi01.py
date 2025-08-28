@@ -77,3 +77,62 @@ print(f'confusion matrix :\n{conf_tab}')
 
 print(f'분류 정확도 : {(16+10)/len(mtcar)}') # 모델이 맞춘 개수 = 맞은 개수 / 전체 개수
 print(f'분류 정확도 : {(conf_tab[0][0]+conf_tab[1][1])/len(mtcar)}')
+
+# -----------<25-08-28>--------------
+from sklearn.metrics import accuracy_score
+pred2 = model1.predict(mtcar) # 0.5를 기준으로 잘라서 0,1이 나올 수 있게 해줘야 한다.
+print(f'분류 정확도(메소드) : {accuracy_score(mtcar['am'], np.round(pred2))}') # 실제값, 예측값
+
+# 모델 작성 방법 2 : glm() generalized linear model 일반화된 선형 모델
+model2 = smf.glm(formula=formula, data=mtcar, family=sm.families.Binomial()).fit()
+print(model2.summary())
+'''
+- 결정계수, f-statics 안나온다.
+- pvalue만 확인하면 된다.
+- 독립변수 두 개이므로 회귀계수 두 개가 도출된다.
+- hp, mpg는 종속변수와 분석해도 문제없다. p < 0.05
+                 Generalized Linear Model Regression Results
+==============================================================================
+Dep. Variable:                     am   No. Observations:                   32
+Model:                            GLM   Df Residuals:                       29
+Model Family:                Binomial   Df Model:                            2
+Link Function:                  Logit   Scale:                          1.0000
+Method:                          IRLS   Log-Likelihood:                -9.6163
+Date:                Thu, 28 Aug 2025   Deviance:                       19.233
+Time:                        10:43:24   Pearson chi2:                     16.1
+No. Iterations:                     7   Pseudo R-squ. (CS):             0.5276
+Covariance Type:            nonrobust
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+Intercept    -33.6052     15.077     -2.229      0.026     -63.155      -4.055
+hp             0.0550      0.027      2.045      0.041       0.002       0.108
+mpg            1.2596      0.567      2.220      0.026       0.147       2.372
+==============================================================================
+'''
+# 예측값 구하기
+glm_pred = model2.predict(mtcar[:10])
+print(f'glm 예측값 : {np.round(glm_pred.values)}') # .values dataframe -> series로 만들어준다.
+print(f'실제값 : {mtcar['am'][:10].values}')
+
+glm_pred2 = model2.predict(mtcar)
+print(f'glm 분류 정확도(메소드) : {accuracy_score(mtcar['am'], np.round(glm_pred2))}') # 실제값, 예측값
+
+# 새로운 값(hp,mpg)으로 변속기 자동/수동 분류 예측
+newdf = mtcar.iloc[:2].copy() # 새로운 값 만들기 위한 컨닝페이퍼
+# 기존 값 덮어씌우기
+newdf['mpg'] = [10,30]
+newdf['hp'] = [120,90]
+# print(newdf)
+
+new_pred = model2.predict(newdf)
+print(f'새로운 값(hp,mpg)에 대한 변속기 : {np.round(new_pred.values)}')
+
+# dataframe 만들어서 해보자
+import pandas as pd
+newdf2 = pd.DataFrame({'mpg':[10,30,50,5],
+                       'hp':[80,110,130,50]})
+new_pred2 = model2.predict(newdf2)
+# print(new_pred2) # np.round 안쓰고 출력하면 확률값이 출력된다.
+print(f'dataframe에 대한 변속기(round) : {np.round(new_pred2.values)}')
+print(f'dataframe에 대한 변속기(rint) : {np.rint(new_pred2.values)}')
