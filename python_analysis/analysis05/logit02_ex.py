@@ -12,7 +12,7 @@ import statsmodels.formula.api as smf
 from sklearn.metrics import accuracy_score
 
 # 데이터 불러오기
-data = pd.read_csv(r'python_analysis\analysis05\ex.csv')
+data = pd.read_csv('/Users/bunny/Documents/git_practice/python_analysis/analysis05/ex.csv')
 # print(data.head(5))
 # data.info()
 # print(f'소득 평균 : {np.mean(data['소득수준']):.2f}') # 소득 평균 : 50.71
@@ -22,11 +22,11 @@ data = data[data['요일'].isin(['토', '일'])].reset_index(drop=True)
 data = data.drop(['요일'],axis=1)
 
 # train/test 분리
-train, test = train_test_split(data, test_size=0.3, random_state=1)
+train, test = train_test_split(data, test_size=0.3, random_state=33)
 # print(train.shape, test.shape)
 
 # 분류모델
-model = smf.glm(formula='외식유무 ~ 소득수준', data=data, family=sm.families.Binomial()).fit()
+model = smf.glm(formula='외식유무 ~ 소득수준', data=train, family=sm.families.Binomial()).fit()
 print(model.summary()) # pvalue 0.010 < 0.05
 print(f'예측값 : {np.round(model.predict(test).values)}')
 print(f'실제값 : {test['외식유무'].values}')
@@ -38,15 +38,17 @@ print(f'모델 정확도 : {accuracy_score(test['외식유무'], np.round(model.
 # 모델 정확도 : 0.8571428571428571
 
 # confusion matrix로 정확도 평가
-model1 = smf.logit(formula='외식유무 ~ 소득수준', data=data).fit()
+'''
+model1 = smf.logit(formula='외식유무 ~ 소득수준', data=train).fit()
 conf_tab = model1.pred_table()
 print(conf_tab)
 print(f'conf_tab 정확도 : {(conf_tab[0][0]+conf_tab[1][1])/conf_tab.sum()}')
 # conf_tab 정확도 : 0.9047619047619048
+'''
 
 
 try:
-    num = int(input('키보드로 소득 수준(양의 정수)을 입력 :'))
+    num = int(input('키보드로 소득 수준(양의 정수)을 입력 :').strip())
     new_df = pd.DataFrame({'소득수준':[num]})
     pred = np.round(model.predict(new_df)[0])
     print(f'결과 : {"주말에 외식한다" if pred==1 else "주말에 외식하지 않는다"}')

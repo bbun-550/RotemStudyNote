@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler # 표준화
 import matplotlib.pyplot as plt
-plt.rc('font', family='malgun gothic')
+plt.rc('font', family='applegothic') # macOS : applegothic / windows : malgun gothic
 plt.rcParams['axes.unicode_minus'] = False
 from matplotlib.colors import ListedColormap # 색깔 출력
 import pickle # 모델 저장
