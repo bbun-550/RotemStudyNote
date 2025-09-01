@@ -86,7 +86,7 @@ data2 = data2[['Daily Time Spent on Site', 'Age', 'Area Income','Daily Internet 
 # 데이터 간 상관관계
 independent = ['Daily Time Spent on Site', 'Age', 'Area Income','Daily Internet Usage']
 dependent = ['Clicked on Ad']
-print(np.corrcoef(independent[0]))
+# print(np.corrcoef(independent[0]))
 
 x = data2[['Daily Time Spent on Site', 'Age', 'Area Income','Daily Internet Usage']]
 print(type(x), x.shape)
