@@ -1,0 +1,14 @@
+
+품목별 구매액에 따른 소득, 가구 내 유아 수 예측
+
+- 독립변수 : 품목별 구매액(MntWines, MntFruits ...) / 소비 패턴 - 연속형
+- 종속변수 : Income 소득(학력, Marital_Status, ), Kidhome 가구 내 유아(어린이) - 연속형/범주형
+
+와인 - 고기 
+
+
+품목별(연속) - Income(연속 or 범주)
+
+
+품목별(연속) - Kidhome(범주) [0 1 2]
+    - 로지스틱(smf.logit , sklearn - LogisticRegression)
