@@ -8,7 +8,14 @@
 
 
 품목별(연속) - Income(연속 or 범주)
-
+    - LinearRegression
+    - 
 
 품목별(연속) - Kidhome(범주) [0 1 2]
-    - 로지스틱(smf.logit , sklearn - LogisticRegression)
+    - 로지스틱
+    - sklearn - LogisticRegression
+
+
+1. 전처리
+2. 이상치 제거
+3. 
