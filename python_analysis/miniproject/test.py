@@ -4,11 +4,11 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-data = pd.read_csv('python_analysis/miniproject/marketing_campaign.csv', sep="\t")
+data = pd.read_csv('marketing_campaign.csv', sep="\t")
 # print(data.columns)
 # data.info()
 
-raw_data = data['ID', 'Year_Birth', 'Education', 'Marital_Status', 'Income', 
+all_data = data['ID', 'Year_Birth', 'Education', 'Marital_Status', 'Income', 
             'Kidhome','Teenhome', 'Dt_Customer', 'Recency', 'MntWines', 
             'MntFruits','MntMeatProducts', 'MntFishProducts', 'MntSweetProducts',
             'MntGoldProds', 'NumDealsPurchases', 'NumWebPurchases',
@@ -31,15 +31,23 @@ today = datetime.now().year
 data['Age'] = today - data['Year_Birth']
 # print(data['Age'].head(5))
 
+
 data['Education'] = data['Education'].map({'Basic':1, '2n Cycle':2, 'Graduation':3, 'Master':4, 'PhD':5})
 data['Marital_Status'] = data['Marital_Status'].map({'Single':1, '2n Together':2, 'Married':3, 'Divorced':4, 'Widow':5, 'Alone':6, 'Absurd':7, 'YOLO':8})
 pd.to_numeric(data['Income'], errors='coerce')
 pd.to_numeric(data['Marital_Status'], errors='coerce')
 
-# data.info()
+
 data = data.dropna().reset_index(drop=True)
 data_filterd = data.drop(['NumDealsPurchases', 'NumWebPurchases', 'NumCatalogPurchases',
        'NumStorePurchases', 'NumWebVisitsMonth','Recency'], axis=1)
+
+print(data.describe())
+
+plt.figure(figsize=(15,9))
+sns.heatmap(data.corr(), annot=True)
+plt.show()
+
 '''
 print(data.columns)
 ['Year_Birth', 'Education', 'Marital_Status', 'Income', 'Kidhome',
@@ -52,9 +60,7 @@ print(data.columns)
 # sns.heatmap(data_filterd.corr(), annot=True)
 # plt.show()
 
-# plt.figure(figsize=(15,9))
-# sns.heatmap(data.corr(), annot=True)
-# plt.show()
+
 
 '''
 # MntWines
