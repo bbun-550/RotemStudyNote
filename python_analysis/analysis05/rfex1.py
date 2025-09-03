@@ -25,8 +25,10 @@ Input variables (based on physicochemical tests):
 '''
 import numpy as np
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -56,3 +58,21 @@ print(f'dtmodel acc : {accuracy_score(y_test,dtpred):.5f}')
 
 rfpred = rfmodel.predict(x_test)
 print(f'rfmodel acc : {accuracy_score(y_test,rfpred):.5f}')
+
+# 혼동행렬 시각화
+plt.figure(figsize=(10, 8))
+sns.heatmap(confusion_matrix(y_test, dtpred), annot=True, fmt='d')
+plt.title('Confusion Matrix')
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+plt.show()
+
+cm = confusion_matrix(y_test, logipred)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=logimodel.classes_)
+disp.plot()
+plt.show()
+
+cm = confusion_matrix(y_test, dtpred)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=dtpred.classes_)
+disp.plot()
+plt.show()

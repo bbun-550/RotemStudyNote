@@ -11,7 +11,7 @@ from statsmodels.stats.anova import anova_lm
 import scipy.stats as stats
 import seaborn as sns
 
-plt.rc('font', family='applegothic')
+plt.rc('font', family='malgun gothic')
 plt.rcParams['axes.unicode_minus'] = False
 
 data = pd.read_csv('filtered_MarketingData.csv')
@@ -67,6 +67,8 @@ axes[1].set_ylabel('와인 소비량', fontsize=12)
 plt.show()
 plt.close()
 
+
+
 groups_meat = [data['MntMeatProducts'][data['Income_Group'] == q] for q in ['저소득층', '중산층', '고소득층']]
 groups_wines = [data['MntWines'][data['Income_Group'] == q] for q in ['저소득층', '중산층', '고소득층']]
 f_stat_meat, p_value_meat = stats.f_oneway(*groups_meat)
@@ -97,35 +99,35 @@ print(f'고소득-육류 정규성 : {stats.shapiro(hincome_Meat).pvalue}')
 print(f'고소득-주류 정규성 : {stats.shapiro(hincome_Wine).pvalue}')
 
 # Kruskal-Wallis 검정
-print("육류 소비량 Kruskal-Wallis:",
+print("육류 소비액 Kruskal-Wallis:",
       stats.kruskal(lincome_Meat, mincome_Meat, hincome_Meat).pvalue)
 
-print("와인 소비량 Kruskal-Wallis:",
+print("와인 소비액 Kruskal-Wallis:",
       stats.kruskal(lincome_Wine, mincome_Wine, hincome_Wine).pvalue)
 
 
 # 사후검정
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
 
-# 육류 소비량
+# 육류 소비액
 tukey_meat = pairwise_tukeyhsd(endog=data['MntMeatProducts'],
                                groups=data['Income_Group'],
                                alpha=0.05)
-print("육류 소비량 Tukey HSD 결과:")
+print("육류 소비액 Tukey HSD 결과:")
 print(tukey_meat)
 
-# 와인 소비량
+# 와인 소비액
 tukey_wine = pairwise_tukeyhsd(endog=data['MntWines'],
                                groups=data['Income_Group'],
                                alpha=0.05)
-print("와인 소비량 Tukey HSD 결과:")
+print("와인 소비액 Tukey HSD 결과:")
 print(tukey_wine)
 
-# 시각화도
+# 시각화
 tukey_meat.plot_simultaneous(comparison_name='저소득층')
-plt.title("육류 소비량 Tukey HSD 결과")
+plt.title("육류 소비액 Tukey HSD 결과")
 plt.show()
 
 tukey_wine.plot_simultaneous(comparison_name='저소득층')
-plt.title("와인 소비량 Tukey HSD 결과")
+plt.title("와인 소비액 Tukey HSD 결과")
 plt.show()
