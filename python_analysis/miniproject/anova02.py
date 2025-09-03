@@ -5,7 +5,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-plt.rc('font' , family='malgun gothic')
+plt.rc('font' , family='applegothic')
 import seaborn
 import statsmodels.formula.api as smf
 
@@ -277,3 +277,35 @@ else:
 # → 유의미한 차이 있음 (귀무가설 기각)
 
 # 사후검정 필요
+
+import seaborn as sns
+fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+cols = ["MntWines","MntFruits","MntMeatProducts",
+        "MntFishProducts","MntSweetProducts","MntGoldProds"]
+
+for i, col in enumerate(cols):
+    ax = axes[i//3, i%3]
+    sns.boxplot(x='Kidhome', y=col, data=data, ax=ax, palette='Paired')
+    ax.set_title(f"Kidhome별 {col} 소비 분포")
+    ax.set_xlabel('가구내 유아 수')
+    ax.set_ylabel('소비량')
+
+plt.tight_layout()
+plt.show()
+
+
+cols = ["MntWines","MntFruits","MntMeatProducts",
+        "MntFishProducts","MntSweetProducts","MntGoldProds"]
+
+# 가구당 유아 수 품목별 평균 
+pivot_mean = data.groupby('Kidhome')[cols].mean().round(1)
+
+plt.figure(figsize=(9, 4.8))
+sns.heatmap(pivot_mean, annot=True, fmt=".1f", cmap="Blues",
+            cbar_kws={"label": "평균 소비량"}, linewidths=.5, linecolor="white")
+plt.title("가구당 유아 수 × 품목별 평균 소비량")
+plt.xlabel("품목")
+plt.ylabel("가구당 유아 수")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
