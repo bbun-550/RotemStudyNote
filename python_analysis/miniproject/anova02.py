@@ -309,3 +309,83 @@ plt.ylabel("가구당 유아 수")
 plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
+
+import scikit_posthocs as sp
+# Dunn’s test 실행
+dunn_result = sp.posthoc_dunn(data, val_col='MntWines', group_col='Kidhome', p_adjust='bonferroni')
+print(dunn_result)
+#                0              1             2
+# 0   1.000000e+00  1.055980e-159  1.528503e-16   0과 비교한 1, 2는 p값이 0에 근사함
+# 1  1.055980e-159   1.000000e+00  1.000000e+00   1과2 비교했을때 p값이 1나왔다
+# 2   1.528503e-16   1.000000e+00  1.000000e+00
+plt.figure(figsize=(8, 6))
+sns.heatmap(dunn_result, annot=True, fmt=".2e", cmap="Blues", linewidths=0.5)
+plt.title("Dunn's test 사후검정(와인)")
+plt.xlabel("가구 당 유아 수")
+plt.ylabel("와인 구매액")
+plt.show()
+
+dunn_result = sp.posthoc_dunn(data, val_col='MntFruits', group_col='Kidhome', p_adjust='bonferroni')
+print(dunn_result)
+#               0             1             2
+# 0  1.000000e+00  1.002681e-92  2.820945e-16   0과 비교한 1, 2는 p값이 0에 근사함
+# 1  1.002681e-92  1.000000e+00  5.863554e-02   1과2 비교했을 때 p값이 0.058
+# 2  2.820945e-16  5.863554e-02  1.000000e+00
+plt.figure(figsize=(8, 6))
+sns.heatmap(dunn_result, annot=True, fmt=".2e", cmap="Blues", linewidths=0.5)
+plt.title("Dunn's test 사후검정(과일)")
+plt.xlabel("가구 당 유아 수")
+plt.ylabel("과일 구매액")
+plt.show()
+
+dunn_result = sp.posthoc_dunn(data, val_col='MntMeatProducts', group_col='Kidhome', p_adjust='bonferroni')
+print(dunn_result)
+#                0              1             2
+# 0   1.000000e+00  6.898412e-141  2.661294e-18   0과 비교한 1, 2는 p값이 0에 근사함
+# 1  6.898412e-141   1.000000e+00  4.236794e-01   1과2 비교했을 때 p값이 0.42
+# 2   2.661294e-18   4.236794e-01  1.000000e+00
+plt.figure(figsize=(8, 6))
+sns.heatmap(dunn_result, annot=True, fmt=".2e", cmap="Blues", linewidths=0.5)
+plt.title("Dunn's test 사후검정(육류)")
+plt.xlabel("가구 당 유아 수")
+plt.ylabel("육류 구매액")
+plt.show()
+
+dunn_result = sp.posthoc_dunn(data, val_col='MntFishProducts', group_col='Kidhome', p_adjust='bonferroni')
+print(dunn_result)
+#               0             1             2
+# 0  1.000000e+00  7.096210e-95  4.348503e-14   0과 비교한 1, 2는 p값이 0에 근사함
+# 1  7.096210e-95  1.000000e+00  2.966549e-01   1과2 비교했을 때 p값이 0.3
+# 2  4.348503e-14  2.966549e-01  1.000000e+00
+plt.figure(figsize=(8, 6))
+sns.heatmap(dunn_result, annot=True, fmt=".2e", cmap="Blues", linewidths=0.5)
+plt.title("Dunn's test 사후검정(어류)")
+plt.xlabel("가구 당 유아 수")
+plt.ylabel("어류 구매액")
+plt.show()
+
+dunn_result = sp.posthoc_dunn(data, val_col='MntSweetProducts', group_col='Kidhome', p_adjust='bonferroni')
+print(dunn_result)
+#               0             1             2
+# 0  1.000000e+00  2.529004e-88  4.457389e-16   0과 비교한 1, 2는 p값이 0에 근사함
+# 1  2.529004e-88  1.000000e+00  4.589095e-02   1과2 비교했을 때 p값이 0.45
+# 2  4.457389e-16  4.589095e-02  1.000000e+00
+plt.figure(figsize=(8, 6))
+sns.heatmap(dunn_result, annot=True, fmt=".2e", cmap="Blues", linewidths=0.5)
+plt.title("Dunn's test 사후검정(디저트)")
+plt.xlabel("가구 당 유아 수")
+plt.ylabel("디저트류 구매액")
+plt.show()
+
+dunn_result = sp.posthoc_dunn(data, val_col='MntGoldProds', group_col='Kidhome', p_adjust='bonferroni')
+print(dunn_result)
+#               0             1             2
+# 0  1.000000e+00  3.665120e-84  3.060763e-12   0과 비교한 1, 2는 p값이 0에 근사함
+# 1  3.665120e-84  1.000000e+00  4.463550e-01   1과2 비교했을 때 p값이 0.44
+# 2  3.060763e-12  4.463550e-01  1.000000e+00
+plt.figure(figsize=(8, 6))
+sns.heatmap(dunn_result, annot=True, fmt=".2e", cmap="Blues", linewidths=0.5)
+plt.title("Dunn's test 사후검정(할인 혜택이 없는 상품)")
+plt.xlabel("가구 당 유아 수")
+plt.ylabel("할인 혜택이 없는 상품 구매액")
+plt.show()
