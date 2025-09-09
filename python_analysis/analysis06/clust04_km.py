@@ -10,10 +10,10 @@ x, _= make_blobs(n_samples=150, n_features=2, centers=3, cluster_std=0.5, shuffl
 
 print(x[:5], x.shape) # (150, 2)
 
-# plt.scatter(x[:, 0], x[:, 1], c='gray', marker='o', s=50)
-# plt.grid()
-# plt.show()
-# plt.close()
+plt.scatter(x[:, 0], x[:, 1], c='gray', marker='o', s=50)
+plt.grid()
+plt.show()
+plt.close()
 
 from sklearn.cluster import KMeans
 init_centroid = 'random' # 초기 클러스터 중심을 임의로 선택
@@ -60,7 +60,7 @@ import numpy as np
 from sklearn.metrics import silhouette_samples
 from matplotlib import cm
 import matplotlib.pyplot as plt
-plt.rc('font', family='malgun gothic')
+plt.rc('font', family='applegothic')
 
 def plotSilhouette(x, pred):
     cluster_labels = np.unique(pred)

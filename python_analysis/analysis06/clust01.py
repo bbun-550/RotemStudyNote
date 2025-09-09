@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-plt.rc('font', family='malgun gothic')
+plt.rc('font', family='applegothic')
 
 np.random.seed(123)
 var = ['X','Y'] # 좌표평면 올리기 위함
@@ -13,10 +13,10 @@ df = pd.DataFrame(X, columns=var, index=labels)
 print(df)
 
 # 데이터 시각화
-# plt.scatter(X[:, 0], X[:, 1], c='b', marker='o', s=50)
-# plt.grid()
-# plt.show()
-# plt.close()
+plt.scatter(X[:, 0], X[:, 1], c='b', marker='o', s=50)
+plt.grid()
+plt.show()
+plt.close()
 
 # clustering 되는 모습 시각화 : 군집화, 최근접 탐색 전처리, 거리기반 시각화(히트맵), 이상치 탐지 등 용도
 from scipy.spatial.distance import pdist, squareform

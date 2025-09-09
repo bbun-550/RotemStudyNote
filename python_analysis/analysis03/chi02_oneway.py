@@ -31,8 +31,8 @@ exp = [10, 10, 10, 10, 10, 10] # 기대값
 
 # print(stats.chisquare(data, exp)) # 관찰빈도, 기대빈도(생략가능). 결과는 위랑 똑같음
 
-# result = stats.chisquare(data, exp) # 출력 방식
-# print(f'chic2 : {result[0]:.2f},\np-value : {result[1]:.6f}')
+result = stats.chisquare(data, exp) # 출력 방식
+print(f'chic2 : {result[0]:.2f},\np-value : {result[1]:.6f}')
 
 # ----------------------
 

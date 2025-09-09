@@ -13,15 +13,15 @@ print(f'점수 : \n{scores.ravel()}') # flatten 보단 ravel를 사용해라(이
 # 계층적 군집
 linked = linkage(scores, method='ward')
 
-# plt.figure(figsize=(10,6))
-# dendrogram(linked, labels=students)
-# plt.axhline(y=25, color='r', linestyle='--', label='cut at height=25') # horizontal line
-# plt.xlabel('Students')
-# plt.ylabel('Distance')
-# plt.legend()
-# plt.grid(True)
-# plt.show()
-# plt.close()
+plt.figure(figsize=(10,6))
+dendrogram(linked, labels=students)
+plt.axhline(y=25, color='r', linestyle='--', label='cut at height=25') # horizontal line
+plt.xlabel('Students')
+plt.ylabel('Distance')
+plt.legend()
+plt.grid(True)
+plt.show()
+plt.close()
 
 # 군집 3개로 나누기
 clusters = fcluster(linked, 3, criterion='maxclust')

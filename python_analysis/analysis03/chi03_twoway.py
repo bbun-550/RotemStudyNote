@@ -78,7 +78,7 @@ data = pd.DataFrame({
     '포카리':[10,20],
     '비타500':[10,30],
 }, index=['남성','여성'])
-# print(data)
+print(data)
 
 chi2, pvalue, dof, expected = stats.chi2_contingency(data) # crosstable 모양을 넣어야 한다
 print(f'카이제곱 chi2 : {chi2:.4f}\n' # 2.2500
@@ -96,7 +96,7 @@ print(f'카이제곱 chi2 : {chi2:.4f}\n' # 2.2500
 '''
 import seaborn as sns
 import matplotlib.pyplot as plt
-plt.rc('font', family='malgun gothic')
+plt.rc('font', family='applegothic')
 plt.rcParams['axes.unicode_minus'] = False
 
 sns.heatmap(data, annot=True, fmt='d', cmap='Blues') # annot=True : 숫자 출력
