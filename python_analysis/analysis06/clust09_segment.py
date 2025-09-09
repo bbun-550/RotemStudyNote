@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 
 np.random.seed(0)
-n_customers = 5000 # 고객수
+n_customers = 200 # 고객수
 annual_spending = np.random.normal(50000, 15000, n_customers) # 연간 지출액 
 monthly_visit = np.random.normal(5, 2, n_customers) # 월 방문 횟수
 # print(annual_spending, monthly_visit)

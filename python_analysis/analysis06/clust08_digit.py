@@ -1,7 +1,7 @@
 # 숫자 이미지 데이터에 K-평균 알고리즘 사용하기
 
 import matplotlib.pyplot as plt
-import seaborn as sns; sns.set()  
+import seaborn as sns;sns.set()  
 import numpy as np
 from sklearn.datasets import load_digits
 
