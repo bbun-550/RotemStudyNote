@@ -11,7 +11,7 @@ train_accuracy = []
 test_accuracy = []
 
 # neighbors를 정해야 한다.
-neighbors_set = range(1,11,2)
+neighbors_set = range(1,11)
 for n_neighbors in neighbors_set:
     clf = KNeighborsClassifier(n_neighbors=n_neighbors, p=1, metric="minkowski")
     clf.fit(x_train, y_train)
