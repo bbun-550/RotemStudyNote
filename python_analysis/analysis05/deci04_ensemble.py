@@ -11,11 +11,11 @@ from sklearn.datasets import load_breast_cancer
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
 from sklearn.metrics import accuracy_score
-from sklearn.ensemble import VotingClassifier
-from sklearn.linear_model import LogisticRegression # classifier
-from sklearn.neighbors import KNeighborsClassifier 
-from sklearn.tree import DecisionTreeClassifier
-from collections import Counter
+from sklearn.ensemble import VotingClassifier  # 여러 분류기의 예측을 결합하는 앙상블(투표) 분류기
+from sklearn.linear_model import LogisticRegression  # 선형 결정경계를 학습하는 로지스틱 회귀 분류기
+from sklearn.neighbors import KNeighborsClassifier  # 가까운 k개의 이웃을 기반으로 분류하는 KNN 분류기
+from sklearn.tree import DecisionTreeClassifier  # 규칙을 트리 구조로 학습하는 결정트리 분류기
+from collections import Counter  # 레이블 분포 등 항목의 개수를 세는 유틸리티
 
 # 암 데이터로 암 발병 유무 확인
 cancer = load_breast_cancer()
