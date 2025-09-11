@@ -76,7 +76,7 @@ def func1(x):
     """
     return w * x + b
 
-@tf.function  # Autograph: 파이썬 함수를 그래프(tf.Graph)로 변환/추적하여 성능 향상
+@tf.function  # Autograph: 파이썬 함수를 그래프(tf.Graph)로 변환/추적하여 성능 향상한다.
 def func2(x):
     return w * x + b
 

@@ -13,8 +13,8 @@ TensorFlow 기초 연습 스크립트
 import tensorflow as tf
 
 # 버전/하드웨어 확인(필요 시 주석 해제)
-# print(tf.__version__)
-# print('GPU', '사용가능' if tf.config.list_physical_devices('GPU') else '불가')
+print(tf.__version__)
+print('GPU', '사용가능' if tf.config.list_physical_devices('GPU') else '불가')
 
 # 즉시 실행 모드 확인: TF2 기본값은 True입니다.
 # print(f'즉시 실행모드 : {tf.executing_eagerly()}')
@@ -36,7 +36,7 @@ tf.Tensor([[1]], shape=(1, 1), dtype=int32) <class 'tensorflow.python.framework.
 # 브로드캐스팅 예시: c의 shape은 (2,), d는 (1,)로 (2,)에 맞춰 확장됩니다.
 a = tf.constant([1,2])
 b = tf.constant([3,4])
-c = a + b
+c = a + b # type: ignore
 d = tf.constant([3])
 e = c + d
 # print(e)  # tf.Tensor([7 9], shape=(2,), dtype=int32) : broadcasting
@@ -76,13 +76,13 @@ print : [6 7]
 
 # 저수준 Graph API 사용 예시(TF1 스타일). TF2에서는 일반적으로 eager + tf.function 사용을 권장.
 g1 = tf.Graph()  # 별도의 그래프 생성(작업 영역)
-with g1.as_default():
-    c1 = tf.constant(1, name='c_one')
-    # 그래프 컨텍스트에서 생성된 텐서는 심볼릭 텐서(실행 전 노드)입니다.
-    print(c1)
-    print(type(c1))
-    # op 정의(proto)를 확인할 수 있습니다.
-    print(c1.op.node_def)
+# with g1.as_default():
+#     c1 = tf.constant(1, name='c_one')
+#     # 그래프 컨텍스트에서 생성된 텐서는 심볼릭 텐서(실행 전 노드)입니다.
+#     print(c1)
+#     print(type(c1))
+#     # op 정의(proto)를 확인할 수 있습니다.
+#     print(c1.op.node_def)
 
 '''
 Tensor("c_one:0", shape=(), dtype=int32)
