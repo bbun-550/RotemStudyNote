@@ -14,5 +14,9 @@ word_index = imdb.get_word_index()
 reverse_word_index = dict([(value, key) for (key, value) in word_index.items()])
 # print(reverse_word_index)
 
+for i, (k, v) in enumerate(sorted(reverse_word_index.items(), key=lambda x:x[0])):
+    if i <= 10:
+        print(k, " ", v)
+
 decord_review = ' '.join([reverse_word_index.get(i) for i in train_data[0]])
-# print(decord_review)
+print(decord_review)
