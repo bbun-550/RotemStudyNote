@@ -16,9 +16,9 @@ x, y = make_moons(n_samples=200, noise=0.05, random_state=0) # noise 표준편�
 print(x[:10])
 print(f'실제 군집 id:{y[:10]}') # [0 1 1 0 1 1 0 1 0 1]
 
-# plt.scatter(x[:, 0], x[:, 1])
-# plt.show()
-# plt.close()
+plt.scatter(x[:, 0], x[:, 1])
+plt.show()
+plt.close()
 
 # KMeans로 군집화
 km = KMeans(n_clusters=2, random_state=0)
