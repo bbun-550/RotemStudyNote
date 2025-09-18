@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 loadModel = load_model('/Users/bunny/Documents/git_practice/python_analysis/tensorflow/tf27model.keras')
 
-im = Image.open('/Users/bunny/Documents/git_practice/python_analysis/tensorflow/digits/3.png')
+im = Image.open('/Users/bunny/Documents/git_practice/python_analysis/tensorflow/digits/.png')
 img = np.array(im.resize((28,28), Image.Resampling.LANCZOS).convert('L'))
 # convert('L') : 이미지를 8비트 그레이스케일(Luminance)로 바꿔서 한 채널(밝기 정보)만 남기기 위한 처리
 # Image.Resampling.LANCZOS는 이미지 크기를 바꿀 때 쓰는 리샘플링 필터로, 
