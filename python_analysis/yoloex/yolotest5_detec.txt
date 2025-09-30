@@ -1,0 +1,83 @@
+[2025-09-30 12:22:06] 이미지: /Users/bunny/Documents/hyundairotem_aimodel/python_analysis/yoloex/image_storage/pet_detection2.jpg
+탐지된 객체 수: 8
+ - 코끼리: box=(700, 233, 1253, 653), confidence:0.92
+ - 기린: box=(44, 39, 279, 300), confidence:0.91
+ - 기린: box=(353, 72, 421, 257), confidence:0.88
+ - 기린: box=(192, 109, 359, 329), confidence:0.85
+ - 새: box=(88, 743, 117, 783), confidence:0.39
+ - 자연산 1馬력 엔진: box=(280, 661, 449, 781), confidence:0.38
+ - 얼룩말: box=(223, 356, 382, 489), confidence:0.37
+ - 얼룩말: box=(453, 360, 580, 501), confidence:0.30
+----------------------------------------
+[2025-09-30 12:22:34] 이미지: /Users/bunny/Documents/hyundairotem_aimodel/python_analysis/yoloex/image_storage/pet_detection3.jpg
+탐지된 객체 수: 3
+ - 기린: box=(113, 247, 369, 543), confidence:0.93
+ - 코끼리: box=(688, 272, 1193, 643), confidence:0.93
+ - 기린: box=(420, 356, 620, 546), confidence:0.88
+----------------------------------------
+[2025-09-30 12:31:42] 이미지: /Users/bunny/Documents/hyundairotem_aimodel/python_analysis/yoloex/image_storage/pet_detection3.jpg
+탐지된 객체 수: 3
+ - 기린: box=(113, 247, 369, 543), confidence:0.93
+ - 코끼리: box=(688, 272, 1193, 643), confidence:0.93
+ - 기린: box=(420, 356, 620, 546), confidence:0.88
+----------------------------------------
+[2025-09-30 12:35:20] 이미지: /Users/bunny/Documents/hyundairotem_aimodel/python_analysis/yoloex/image_storage/pet_detection3.jpg
+탐지된 객체 수: 3
+ - 기린: box=(113, 247, 369, 543), confidence:0.93
+ - 코끼리: box=(688, 272, 1193, 643), confidence:0.93
+ - 기린: box=(420, 356, 620, 546), confidence:0.88
+----------------------------------------
+[2025-09-30 12:55:55] 이미지: /Users/bunny/Documents/hyundairotem_aimodel/python_analysis/yoloex/image_storage/pet_detection3.jpg
+탐지된 객체 수: 3
+ - 기린: box=(113, 247, 369, 543), confidence:0.93
+ - 코끼리: box=(688, 272, 1193, 643), confidence:0.93
+ - 기린: box=(420, 356, 620, 546), confidence:0.88
+----------------------------------------
+[2025-09-30 12:56:19] 이미지: /Users/bunny/Documents/hyundairotem_aimodel/python_analysis/yoloex/image_storage/pet_detection3.jpg
+탐지된 객체 수: 3
+ - 기린: box=(113, 247, 369, 543), confidence:0.93
+ - 코끼리: box=(688, 272, 1193, 643), confidence:0.93
+ - 기린: box=(420, 356, 620, 546), confidence:0.88
+----------------------------------------
+[2025-09-30 13:00:50] 이미지: /Users/bunny/Documents/hyundairotem_aimodel/python_analysis/yoloex/image_storage/stray_pet_detection3.jpg
+탐지된 객체 수: 3
+ - 기린: box=(113, 247, 369, 543), confidence:0.93
+ - 코끼리: box=(688, 272, 1193, 643), confidence:0.93
+ - 기린: box=(420, 356, 620, 546), confidence:0.88
+----------------------------------------
+[2025-09-30 13:01:18] 이미지: /Users/bunny/Documents/hyundairotem_aimodel/python_analysis/yoloex/image_storage/stray_pet_detection1.jpg
+탐지된 객체 수: 5
+ - 얼룩말: box=(52, 158, 146, 223), confidence:0.91
+ - 얼룩말: box=(117, 176, 221, 234), confidence:0.87
+ - 코끼리: box=(232, 124, 320, 175), confidence:0.87
+ - 얼룩말: box=(11, 170, 62, 218), confidence:0.67
+ - 소: box=(160, 151, 182, 168), confidence:0.36
+----------------------------------------
+[2025-09-30 13:02:06] 이미지: /Users/bunny/Documents/hyundairotem_aimodel/python_analysis/yoloex/image_storage/stray_pet_detection3.jpg
+탐지된 객체 수: 3
+ - 기린: box=(113, 247, 369, 543), confidence:0.93
+ - 코끼리: box=(688, 272, 1193, 643), confidence:0.93
+ - 기린: box=(420, 356, 620, 546), confidence:0.88
+----------------------------------------
+[2025-09-30 13:02:44] 이미지: /Users/bunny/Documents/hyundairotem_aimodel/python_analysis/yoloex/image_storage/stray_pet_detection2.jpg
+탐지된 객체 수: 8
+ - 코끼리: box=(700, 233, 1253, 653), confidence:0.92
+ - 기린: box=(44, 39, 279, 300), confidence:0.91
+ - 기린: box=(353, 72, 421, 257), confidence:0.88
+ - 기린: box=(192, 109, 359, 329), confidence:0.85
+ - 새: box=(88, 743, 117, 783), confidence:0.39
+ - 자연산 1馬력 엔진: box=(280, 661, 449, 781), confidence:0.38
+ - 얼룩말: box=(223, 356, 382, 489), confidence:0.37
+ - 얼룩말: box=(453, 360, 580, 501), confidence:0.30
+----------------------------------------
+[2025-09-30 15:26:57] 이미지: /Users/bunny/Documents/hyundairotem_aimodel/python_analysis/yoloex/image_storage/stray_pet_detection2.jpg
+탐지된 객체 수: 8
+ - 코끼리: box=(700, 233, 1253, 653), confidence:0.92
+ - 기린: box=(44, 39, 279, 300), confidence:0.91
+ - 기린: box=(353, 72, 421, 257), confidence:0.88
+ - 기린: box=(192, 109, 359, 329), confidence:0.85
+ - 새: box=(88, 743, 117, 783), confidence:0.39
+ - 자연산 1馬력 엔진: box=(280, 661, 449, 781), confidence:0.38
+ - 얼룩말: box=(223, 356, 382, 489), confidence:0.37
+ - 얼룩말: box=(453, 360, 580, 501), confidence:0.30
+----------------------------------------
