@@ -49,7 +49,7 @@ else:
 	print("웹캠 사용 가능")
 
 cv2.namedWindow("Yolo 실시간 객체 감지", cv2.WINDOW_NORMAL)
-cv2.resizeWindow("YOLO 실시간 객체 감지", 800, 600)
+cv2.resizeWindow("Yolo 실시간 객체 감지", 800, 600)
 
 # 중복 저장 방지용으로 객체별 마지막 저장 시각 기록
 last_saved_time = {}

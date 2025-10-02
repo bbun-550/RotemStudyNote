@@ -25,6 +25,7 @@ cv2.imwrite(os.path.join(OUT_DIR, 'seg_result.jpg'), annotated)
 has_masks = (res.masks is not None)
 
 if has_masks:
+    # res 결과는 PyTorch 텐서라 GPU에 있을 수 있으므로 .cpu()로 CPU 메모리로 옮긴 뒤 numpy 배열로 변환한다
     masks_np = res.masks.data.cpu().numpy()    # 객체별 픽셀 마스크  shape=(N, H, W)
     boxes_np = res.boxes.xyxy.cpu().numpy().astype(int)    # 경계박스 좌표
     confs_np = res.boxes.conf.cpu().numpy()    # 신뢰도 점수
