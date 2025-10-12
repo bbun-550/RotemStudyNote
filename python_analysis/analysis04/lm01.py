@@ -2,7 +2,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-plt.rc('font', family='malgun gothic')
+plt.rc('font', family='applegothic')
 plt.rcParams['axes.unicode_minus'] = False
 
 x = np.array([0,1,2,3])

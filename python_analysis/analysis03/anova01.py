@@ -26,11 +26,11 @@ from statsmodels.formula.api import ols # 최소제곱으로 기울기와 절편
 
 data = pd.read_csv('https://raw.githubusercontent.com/pykwon/python/refs/heads/master/testdata_utf8/three_sample.csv')
 # 필요한 칼럼은 method랑 score이다.
-# print(data.head(2))
-# print(data.columns) # ['no', 'method', 'survey', 'score']
-# print(data.shape) # (80, 4)
-# print(data['method'].unique()) # [1 3 2]
-# print(data.describe()) # 결측치, 평균, 이상치 ... 확인 -> score max에 이상치 발견!
+print(data.head(2))
+print(data.columns) # ['no', 'method', 'survey', 'score']
+print(data.shape) # (80, 4)
+print(data['method'].unique()) # [1 3 2]
+print(data.describe()) # 결측치, 평균, 이상치 ... 확인 -> score max에 이상치 발견!
 
 # outlier 차트로 확인하자.
 import matplotlib.pyplot as plt
@@ -67,7 +67,7 @@ score3 = m3['score']
 ## Kruskal-Wallis test 방법 쓴다.
 
 ## 정규성 2개씩 확인하는 방법
-# print(stats.ks_2samp(score1, score2)) # 두 집단의 동일 분포 여부 확인용 
+print(stats.ks_2samp(score1, score2)) # 두 집단의 동일 분포 여부 확인용 
 
 # 등분산성(복수 집단 분산의 치우침 정도 확인) 3가지 있음
 # print(f'등분산성 levene : {stats.levene(score1, score2, score3).pvalue:.4f}') # pvalue: 0.1132
