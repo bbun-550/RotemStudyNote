@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Classification Dashboard</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --primary: #3066be;
+      --primary-dark: #1f3f73;
+      --bg: #f5f6fa;
+      --text: #1c1c28;
+      --muted: #5f6c7b;
+      --border: rgba(28, 28, 40, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--primary), #59a5d8);
+      color: #ffffff;
+      padding: 4.5rem 1.5rem 7rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin: 0 0 0.75rem;
+      font-size: clamp(2rem, 3.2vw, 3rem);
+      font-weight: 700;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .container {
+      max-width: 960px;
+      margin: -4.5rem auto 3rem;
+      padding: 0 1.5rem 3rem;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 2.25rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 20px 45px rgba(26, 50, 90, 0.12);
+      border: 1px solid var(--border);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .upload-form {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .file-input {
+      position: relative;
+      border: 2px dashed var(--border);
+      border-radius: 14px;
+      padding: 1.75rem;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .file-input:hover,
+    .file-input:focus-within {
+      border-color: rgba(48, 102, 190, 0.6);
+      color: var(--primary);
+    }
+
+    .file-input input[type="file"] {
+      opacity: 0;
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+    }
+
+    button[type="submit"] {
+      justify-self: start;
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      padding: 0.85rem 1.75rem;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    button[type="submit"]:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .message {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .message.error {
+      color: #d64545;
+      font-weight: 600;
+    }
+
+    .message.hint {
+      color: var(--muted);
+    }
+
+    .results h2 {
+      margin-bottom: 1.5rem;
+    }
+
+    .prediction {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: baseline;
+      margin-bottom: 1.75rem;
+    }
+
+    .prediction .label {
+      font-size: clamp(1.6rem, 3vw, 2.25rem);
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .prediction .confidence {
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    figure {
+      margin: 0;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fdfdfd;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    }
+
+    figure img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #ffffff;
+    }
+
+    figcaption {
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: rgba(48, 102, 190, 0.05);
+      font-weight: 600;
+    }
+
+    .top-classes h3 {
+      margin: 0 0 0.75rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .top-classes ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .top-classes li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(48, 102, 190, 0.06);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      font-weight: 500;
+      color: var(--primary-dark);
+    }
+
+    .top-classes .class-confidence {
+      color: var(--primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 2rem 1.5rem 3rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 1.75rem;
+      }
+
+      .hero {
+        padding-bottom: 6rem;
+      }
+
+      .container {
+        margin-top: -4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-content">
+      <h1>CIFAR - 100 이미지 분류기</h1>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>이미지 업로드</h2>
+      <form method="post" enctype="multipart/form-data" class="upload-form">
+        {% csrf_token %}
+        <label class="file-input">
+          <span>클릭해서 파일 찾기 / 드래그 파일 업로드</span>
+          <input type="file" name="image" accept="image/*" required>
+        </label>
+        <button type="submit">분류 결과 확인</button>
+      </form>
+
+      {% if error %}
+        <p class="message error">{{ error }}</p>
+      {% else %}
+        <p class="message hint">업로드 가능 파일 확장자 : JPG, PNG, BMP, GIF (업로드 허용 용량 5&nbsp;MB.)</p>
+      {% endif %}
+    </section>
+
+    {% if predicted_label %}
+    <section class="card results">
+      <h2>분류 결과</h2>
+      <div class="prediction">
+        <span class="label">{{ predicted_label|title }}</span>
+        <span class="confidence">{{ confidence_pct|floatformat:2 }}% confidence</span>
+      </div>
+
+      <div class="preview-grid">
+        <figure>
+          <img src="{{ uploaded_image_url }}" alt="Uploaded image preview">
+        </figure>
+        <figure>
+          <img src="{{ plot_url }}" alt="Matplotlib rendering of the uploaded image">
+        </figure>
+      </div>
+
+      <div class="top-classes">
+        <h3>예측 결과값</h3>
+        <ul>
+          {% for item in top_classes %}
+            <li>
+              <span class="class-name">{{ item.label|title }}</span>
+              <span class="class-confidence">{{ item.percentage|floatformat:2 }}%</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+    {% endif %}
+  </main>
+
+</body>
+</html>
+
