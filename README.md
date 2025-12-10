@@ -1,15 +1,16 @@
 
-📘 AI 모델 개발 과정 실습 저장소
+# 📘 AI 모델 개발 과정 실습 저장소
 
-Data → ML → DL → CV → NLP → RAG 까지 전 과정 실습 및 노트 정리
+`Data → ML → DL → CV → NLP → RAG` 까지 전 과정 실습 및 노트 정리
 
 이 저장소는 AI 모델 개발 교육과정에서 수행한 모든 실습 코드, 학습 노트, 자료를 기술 스택별로 구조화하여 정리한 공간입니다.
 각 스택은 폴더 내부 README.md와 연결되어 있어, GitHub에서 클릭하면 바로 해당 과목의 실습/노트를 볼 수 있습니다.
 
 ⸻
 
-🧭 Repository Structure Overview
+## 🧭 Repository Structure Overview
 
+```yaml
 .
 ├── 01_Data_Collection_Preprocessing
 ├── 02_Statistics
@@ -17,15 +18,15 @@ Data → ML → DL → CV → NLP → RAG 까지 전 과정 실습 및 노트 �
 ├── 90.course_notes
 ├── 99.storage
 └── README.md
-
+```
 
 ⸻
 
-🚀 Technical Stack Overview
+## 🚀 Technical Stack Overview
 
-1️⃣ Python Data Processing
+#### 1️⃣ Python Data Processing
 
-Skills:
+**Skills**:
 Python, Numpy, Pandas, Web Crawling, Data Preprocessing, Visualization(Matplotlib)
 
 Main Contents:
@@ -34,14 +35,13 @@ Main Contents:
 	•	전처리 파이프라인 구축
 	•	시각화 실습(Bar, Line, Scatter, Heatmap 등)
 
-👉 01_Data_Collection_Preprocessing￼
-(각 하위 폴더에 README.md로 세부 정리 가능)
+👉 [01_Data_Collection_Preprocessing](01_Data_Collection_Preprocessing)￼
 
 ⸻
 
-2️⃣ Statistics & Classical Machine Learning
+#### 2️⃣ Statistics & Classical Machine Learning
 
-Skills:
+**Skills**:
 Linear Regression, Logistic Regression,
 Perceptron, Neural Network Basics,
 Decision Tree, Random Forest, SVM,
@@ -57,9 +57,9 @@ Main Contents:
 
 ⸻
 
-3️⃣ Machine Learning & Deep Learning
+#### 3️⃣ Machine Learning & Deep Learning
 
-Skills:
+**Skills**:
 TensorFlow, Activation Functions,
 Binary/Multiclass Classification,
 Softmax, MNIST,
@@ -76,9 +76,9 @@ Main Contents:
 
 ⸻
 
-4️⃣ Computer Vision (YOLO Series)
+#### 4️⃣ Computer Vision (YOLO Series)
 
-Skills:
+**Skills**:
 YOLOv8, Object Detection,
 Image Segmentation,
 Model Export(ONNX/TensorRT)
@@ -94,9 +94,9 @@ Main Contents:
 
 ⸻
 
-5️⃣ NLP (Natural Language Processing)
+#### 5️⃣ NLP (Natural Language Processing)
 
-Skills:
+**Skills**:
 NLP Basics,
 Bag of Words, Tokenizer,
 RNN, LSTM, Attention,
@@ -113,9 +113,9 @@ Main Contents:
 
 ⸻
 
-6️⃣ Vector Database / LangChain / RAG
+#### 6️⃣ Vector Database / LangChain / RAG
 
-Skills:
+**Skills**:
 VectorDB (Chroma, FAISS),
 LangChain, LangGraph,
 Embeddings, RAG (Retrieval-Augmented Generation)
@@ -131,7 +131,7 @@ Main Contents:
 
 ⸻
 
-📝 Course Notes
+#### 📝 Course Notes
 
 전체 수업 필기 및 정리 자료는 아래 폴더에 정리합니다.
 
@@ -142,7 +142,7 @@ Main Contents:
 
 ⸻
 
-🧪 Storage & Misc Codes
+#### 🧪 Storage & Misc Codes
 
 프로젝트 외 테스트 코드, 실습 이미지 및 데이터 소스 폴더입니다.
 
