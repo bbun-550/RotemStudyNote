@@ -72,6 +72,7 @@ Main Contents:
 	•	모델 성능 비교 및 튜닝
 
 👉 [03_AI_MLDL/01.tensorflow](03_AI_MLDL/01.tensorflow)
+
 👉 [03_AI_MLDL/02.deeplearning](03_AI_MLDL/02.deeplearning)￼
 
 ⸻
@@ -127,7 +128,10 @@ Main Contents:
 	•	다양한 Retrieval 전략 실험
 
 👉 [03_AI_MLDL/05.vectordb](03_AI_MLDL/05.vectordb)￼
-👉 [03_AI_MLDL/06.lang](03_AI_MLDL/06.lang)￼
+
+👉 [03_AI_MLDL/06.lang](03_AI_MLDL/06.lang)
+
+👉 [03_AI_MLDL/07.rag](03_AI_MLDL/07.rag)
 
 ⸻
 
