@@ -6,6 +6,9 @@
 이 저장소는 AI 모델 개발 교육과정에서 수행한 모든 실습 코드, 학습 노트, 자료를 기술 스택별로 구조화하여 정리한 공간입니다.
 각 스택은 폴더 내부 README.md와 연결되어 있어, GitHub에서 클릭하면 바로 해당 과목의 실습/노트를 볼 수 있습니다.
 
+- 📖 : 학습 중
+- ✏️ : 필기 중
+
 ---
 
 ## 🧭 Repository Structure Overview
@@ -53,7 +56,13 @@ PCA
 - 모델 평가 및 시각화
 - 차원축소 실습
 
-👉 [02_Statistics](02_Statistics)
+👉 [02_Statistics/01.analysis — 기초 통계 & 가설검정 (Statistical Inference)](02_Statistics/01.analysis)
+\
+👉 [02_Statistics/02.analysis — 상관분석 & 회귀분석 (Correlation & Regression)](02_Statistics/02.analysis)
+\
+👉 [02_Statistics/03.analysis — 지도학습 기반 머신러닝 모델](02_Statistics/03.analysis)
+\
+👉 [02_Statistics/04.analysis — 비지도 학습 & 군집 분석 (Clustering))](02_Statistics/04.analysis)
 
 ---
 
@@ -72,7 +81,7 @@ CNN, Dog vs Cat, CIFAR-10
 - 모델 성능 비교 및 튜닝
 
 👉 [03_AI_MLDL/01.tensorflow](03_AI_MLDL/01.tensorflow)
-
+\
 👉 [03_AI_MLDL/02.deeplearning](03_AI_MLDL/02.deeplearning)￼
 
 ---
@@ -128,10 +137,10 @@ Embeddings, RAG (Retrieval-Augmented Generation)
 - 다양한 Retrieval 전략 실험
 
 👉 [03_AI_MLDL/05.vectordb](03_AI_MLDL/05.vectordb)￼
-
+\
 👉 [03_AI_MLDL/06.lang](03_AI_MLDL/06.lang)
-
-👉 [03_AI_MLDL/07.rag](03_AI_MLDL/07.rag)
+\
+📖 [03_AI_MLDL/07.rag](03_AI_MLDL/07.rag)
 
 ---
 
@@ -139,7 +148,7 @@ Embeddings, RAG (Retrieval-Augmented Generation)
 
 전체 수업 필기 및 정리 자료는 아래 폴더에 정리합니다.
 
-👉 90.course_notes￼
+👉 [90.course_notes](90.course_notes)￼
 - Daily Notes
 - Code Explanation
 - 참고문헌
