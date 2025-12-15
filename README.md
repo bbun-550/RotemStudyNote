@@ -159,4 +159,4 @@ Embeddings, RAG (Retrieval-Augmented Generation)
 
 테스트 코드, 실습 이미지 및 데이터 소스 폴더입니다.
 
-👉 99.storage￼
+👉 [99.storage](99.storage/)￼
