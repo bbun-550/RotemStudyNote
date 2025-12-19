@@ -119,7 +119,7 @@ Self-Attention, Transformer
 - Attention 메커니즘 구현 실습
 - Transformer 구조 이해
 
-👉 [03_AI_MLDL/04.nlp](03_AI_MLDL/04.nlp)￼
+✏️ [03_AI_MLDL/04.nlp](03_AI_MLDL/04.nlp)￼
 
 ---
 
@@ -146,9 +146,10 @@ Embeddings, RAG (Retrieval-Augmented Generation)
 
 ## 📝 Course Notes
 
-전체 수업 필기 및 정리 자료는 아래 폴더에 정리합니다.
+전체 수업 필기 및 정리 자료는 아래 폴더, 주제별 폴더 안 **00.NOTES**에 담겨 있습니다.
 
-👉 [90.course_notes](90.course_notes)￼
+👉 [90.course_notes](90.course_notes)\
+👉 00.NOTES
 - Daily Notes
 - Code Explanation
 - 참고문헌
