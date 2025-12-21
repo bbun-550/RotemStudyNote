@@ -60,7 +60,7 @@ rag01.ipynb - 실습의  의미
 	이미지 → 텍스트 변환이라는 RAG 입력 확장 기반을 제공
 - 이후 PDF 이미지 추출(rag08, rag09)과도 연계됨
 
-👉 [RAG & 멀티모달 기본 이론 정리](90.course_notes/00.NOTES/251203_rag.md)￼
+👉 [RAG & 멀티모달 기본 이론 정리](00.NOTES/251203_rag.md)￼
 
 ---
 
@@ -93,7 +93,7 @@ RAG는 크게 3단계로 이루어진다:
 
 Retrieval 단계 = “LLM이 모르는 정보”를 외부에서 찾아오는 단계
 
-👉 [텍스트 기반 RAG 파이프라인 이론 정리](90.course_notes/00.NOTES/251205_rag.md)￼
+👉 [텍스트 기반 RAG 파이프라인 이론 정리](00.NOTES/251203_rag.md)￼
 
 ---
 
@@ -142,7 +142,7 @@ LLM 프롬프트
 `저장된 문서 직접 검증 → 검색 → context 구성 → 스타일이 있는 Augmented Prompt → LLM 생성`
 실전 RAG 파이프라인에 가까운 형태
 
-👉 [VectorDB 내부 조회 & 고급 프롬프트 엔지니어링 이론 정리](90.course_notes/00.NOTES/251209_rag.md)￼
+👉 [VectorDB 내부 조회 & 고급 프롬프트 엔지니어링 이론 정리](00.NOTES/251209_rag.md)￼
 
 ---
 
@@ -280,53 +280,205 @@ SentenceTransformer를 활용한 임베딩, ChromaDB를 이용한 벡터 검색,
 
 ---
 
-### 📌 rag06_pdf.ipynb — (기본 PDF RAG)
+### 📌 rag06_pdf.ipynb — PDF 문서 로딩과 페이지 단위 요약
 
-개요:
+개요: 
+
+PDF 문서를 RAG의 지식 소스를 사용하기 위해 **페이지 단위 텍스트 추출 및 LLM 요약** 수행
 
 핵심 내용:
-	•	
-	•	
+- PyPDFLoader를 이용한 페이지 단위 문서 로딩
+- `Document.page_content, metadata` 구조 이해
+- LLM을 활용한 
+  - 페이지별 요약
+  - 전체 문서 요약
+- 문서 요약을 **Retrieval 이전 전처리 단계**로 활용하는 개념
 
 ---
 
-### 📌 rag07_pdf_table.ipynb — (PDF Table RAG)
+### 📌 rag07_pdf_table.ipynb — PDF 표(Table) 추출 및 구조화 실습
 
 개요:
 
+**표 형식 데이터가 포함된 PDF 문서**를 대상으로  
+단순 텍스트 추출을 넘어 **표(Table) 데이터를 구조적으로 추출, 정제**하는 과정을 다룬다.
+
+`PyMuPDFLoader`를 이용한 **전체 텍스트 추출**과  
+`pdfplumber`를 이용한 **표 전용 추출 방식**을 비교·활용하여,
+
+- 비정형 PDF 문서에서
+- 정형 데이터(DataFrame)를 생성하고
+- CSV / Excel 파일로 저장하는 흐름
+
+을 실습한다.
+
 핵심 내용:
-	•	
-	•	
+- **PDF 전체 텍스트 추출 (PyMuPDFLoader)**
+  - 페이지 단위로 PDF 로딩
+  - `Document.page_content`를 이용한 전체 문자열 결합
+  - 정규표현식을 활용한 **한글 텍스트만 추출**
+  - 여러 줄 텍스트를 하나의 긴 문장으로 정제
+
+- **표(Table) 데이터 전용 추출 (pdfplumber)**
+  - `page.extract_tables()`를 이용한 표 리스트 추출
+  - 헤더 행 제거 후 데이터 행만 처리
+  - 열(column) 개수 검증을 통한 안정적 파싱
+  - 분리된 셀을 병합하여 명칭 컬럼 재구성
+
+- **구조화된 데이터 생성**
+  - 시도 / 시군구 / 명칭 / 유형 / 페이지 번호를 컬럼으로 구성
+  - 각 행(row)을 하나의 딕셔너리로 관리
+  - Pandas DataFrame으로 변환
+
+- **기초 통계 분석**
+  - 유형(계곡, 하천 등)별 빈도수 집계
+  - PDF 문서를 데이터 분석 관점에서 재해석
+
+- **데이터 파일로 저장**
+  - CSV 파일 저장
+  - Excel 파일 저장
+  - 이후 RAG, 통계 분석, 시각화 실습에 재사용 가능
 
 ---
 
-### 📌 rag08_pdf_img.ipynb — (PDF Image Extraction + RAG)
+### 📌 rag08_pdf_img.ipynb — PDF 이미지(OCR) 기반 멀티모달 RAG 전처리
 
 개요:
 
+**PDF 문서에 포함된 이미지 영역**(스캔 문서, 사진 등)을 대상으로  
+**OCR(Optical Character Recognition)** 을 적용하여 텍스트를 추출하는 과정을 다룬다.
+
+- **텍스트가 아닌 이미지 형태로 존재하는 정보까지 RAG에 포함**시키는 단계이다.
+
+이를 통해 **멀티모달 문서 처리 기반 RAG의 기초 전처리 파이프라인**을 학습한다.
+
+
 핵심 내용:
-	•	
-	•	
+
+- **PDF 텍스트 추출 방식 비교**
+  - `PyMuPDFLoader`를 이용한 페이지 단위 텍스트 로딩
+  - `fitz(PyMuPDF)`를 이용한 저수준 PDF 접근
+  - `Document(page_content, metadata)` 구조 직접 생성
+
+- **PDF 메타데이터 활용**
+  - 페이지 번호, 전체 페이지 수
+  - 작성자(author), 제목(title), 생성 도구(producer)
+  - 추후 RAG 답변의 출처·신뢰도 설명에 활용 가능
+
+- **PDF 이미지 추출**
+  - `page.get_images(full=True)`를 이용해 페이지 내 모든 이미지 탐색
+  - `doc.extract_image(xref)`로 이미지 raw bytes 추출
+  - PIL.Image로 변환 후 파일 저장
+
+- **OCR(광학 문자 인식) 적용**
+  - `pytesseract.image_to_data()`를 사용하여
+    - 텍스트
+    - 위치 좌표
+    - 신뢰도(confidence)
+    를 함께 추출
+  - 신뢰도(conf) 60 이상 단어만 필터링하여 노이즈 제거
+
+- **OCR 결과 시각화**
+  - 인식된 텍스트 영역에 사각형(box) 표시
+  - OCR 결과를 이미지 위에 직접 확인
+  - OCR 품질 검증 및 디버깅에 활용
+
+- **한글 OCR 환경 구성**
+  - `tesseract-ocr-kor` 설치
+  - 한국어 + 영어(`kor+eng`) 동시 인식 설정
+
+- **OCR 정확도 개선 기법**
+  - 이미지 확대(resize) 후 OCR 수행
+  - 정규표현식으로
+    - 한글/영어
+    - 2글자 이상
+    만 추출하여 의미 없는 결과 제거
+
+- **OCR 결과 구조화**
+  - 페이지 번호 + 이미지 번호 + 추출 텍스트 형태로 저장
+  - 이후 VectorDB 저장 및 RAG Retrieval 대상 확장 가능
 
 ---
 
-### 📌 rag09_pdf_overlap.ipynb — (Chunk Overlap 실험)
+### 📌 rag09_pdf_overlap.ipynb — Chunk Overlap을 통한 문맥 보존 전략
 
 개요:
 
-핵심 내용:
-	•	
-	•	
+RAG 시스템에서 PDF나 긴 문서를 그대로 **페이지 단위 또는 고정 청크 단위**로 분할하면,  
+문맥이 중요한 문장들이 경계에서 끊어지는 문제가 발생한다.
 
+예를 들어,
+- 이전 페이지: *“그는 아내를 찾아…”*
+- 다음 페이지: *“간신히 병원에 도착했다.”*
+
+처럼 나뉘면,
+- Retrieval 단계에서 한 쪽만 검색될 경우
+- **주어, 행위, 맥락이 소실된 채 LLM에 전달**된다.
+
+이 문제를 해결하기 위해 
+**이전 페이지(또는 이전 청크)의 일부 문단을 다음 페이지 앞에 겹쳐 붙이는  
+Overlap 기반 문서 분할 전략**을 직접 구현하고 검증한다.
+
+
+핵심 내용:
+
+- **문맥 단절 문제 인식**
+  - 페이지 단위 분리 시 질문 응답 정확도 저하
+  - Retrieval 결과가 “불완전한 정보 조각”이 되는 문제
+
+- **PDF 로딩 구조 이해**
+  - `PyMuPDFLoader`로 PDF 로드
+  - 페이지마다 하나의 `Document`
+    - `page_content`: 해당 페이지 전체 텍스트
+    - `metadata`: 페이지 번호, 전체 페이지 수, 작성자 등
+
+- **문단 단위 분리**
+  - 한 페이지 내 텍스트를 `\n` 기준으로 분리
+  - 불필요한 공백 제거 후 문단 리스트 생성
+  - 전체 문서를 “문단 단위 지식 조각”으로 변환
+
+- **Chunk Overlap(슬라이딩 윈도우) 구현**
+  - 이전 페이지의 마지막 N개 문단을
+    → 다음 페이지 문단 앞에 **겹쳐서 결합**
+  - `overlap_count = 2` 등으로 겹침 범위 조절 가능
+  - 페이지 경계를 넘어 자연스러운 문맥 유지
+
+- **Overlap 추적 및 검증**
+  - 어떤 페이지의 문단이
+    - 어느 페이지로 겹쳐 들어갔는지 기록
+  - `[p.이전 → p.다음]` 형태로 로그 출력
+  - 실제로 문맥 연결이 유지되는지 확인
+
+- **Overlap 적용 전/후 비교**
+  - overlap 미적용: 총 문단 수 ↓, 문맥 단절 발생
+  - overlap 적용: 문단 수 ↑, Retrieval 품질 개선
+  - “문단 수 증가”는 비용이지만
+    → **정확도·이해도 향상이라는 실질적 이득**이 있음
 ---
 
-### 📌 rag10_routing.ipynb — (Router / Branching RAG)
+### 📌 rag10_routing.ipynb — 질문 유형 분기 기반 멀티체인 RAG(Router)
 
 개요:
 
+`rag10.py`는 `data/` 폴더의 `.txt` 강의 노트를 읽어
+1) 문서를 청크로 분할하고
+2) SentenceTransformer로 임베딩하여
+3) Chroma 벡터DB에 저장/로드한 뒤
+4) 사용자의 질문을 **RAG / 코드헬프 / 일반설명** 중 하나로 라우팅해서
+5) 적절한 체인으로 답변하는 “튜터형 챗봇”을 만든다
+
+핵심은 “강의자료 기반 답변(RAG)”을 기본으로 하되,
+질문 성격에 따라 **디버깅 전용 프롬프트**나 **일반 설명 프롬프트**로 분기하는 구조까지 포함한다.
+
 핵심 내용:
-	•	
-	•	
+1) 환경/경로 구성
+2) SentenceTransformer 임베딩을 LangChain Embeddings로 래핑
+3) 문서 로딩 및 청킹(Chunking)
+4) Chroma 벡터DB 생성/재사용
+5) RAG 체인(LCEL) 구성
+6) RAG 없이 사용하는 일반 체인 / 코드 헬프 체인
+7) 질의 라우팅(에이전트 브레인)
+8) 인터랙티브 채팅 루프 + 참고 chunk 출력
 
 ---
 
@@ -370,7 +522,7 @@ SentenceTransformer를 활용한 임베딩, ChromaDB를 이용한 벡터 검색,
 
 ---
 
-### 📌 rag14_conditional_edge.ipyn — 
+### 📌 rag14_conditional_edge.ipynb — 
 
 개요:
 
@@ -388,3 +540,237 @@ SentenceTransformer를 활용한 임베딩, ChromaDB를 이용한 벡터 검색,
 	•	
 	•	
 
+---
+
+### 📌 rag16_llm_graph.ipynb — LangGraph 기반 LLM 파이프라인 기초
+
+개요:
+
+LangGraph를 활용해 LLM 기반 작업 흐름을 그래프(Graph) 구조로 구성하는 첫 실습이다.
+기존의 “한 번 호출 → 한 번 응답” 방식에서 벗어나,
+- 질문 처리
+- LLM 답변 생성
+- 후처리(요약)
+
+와 같은 단계를 명시적인 노드(Node)와 엣지(Edge) 로 분리하여
+LLM 애플리케이션을 구조적·확장 가능하게 설계하는 방법을 학습한다.
+
+RAG를 직접 사용하지는 않지만,
+\
+➜ 이후 rag17의 RAG + Graph 결합 구조를 이해하기 위한 필수 기초 단계에 해당한다.
+
+핵심 내용:
+
+1. State 기반 LLM 설계 (TypedDict)
+
+```python
+class QAState(TypedDict):
+    question: str
+    answer: str
+    summary: str
+```
+
+- LangGraph는 State 중심(Stateful) 설계를 사용
+- 각 노드는 State를 입력으로 받고, State를 업데이트하여 반환
+- 단순 문자열 전달이 아니라 파이프라인 전체의 데이터 흐름을 명시적으로 관리
+
+2. LLM 처리 노드 분리
+
+- 답변 생성 노드 — `node_llm_answer`
+	- 역할: 질문 → LLM 호출 → 답변 생성
+	- 프롬프트 책임:
+	- 한국어 응답
+	- 중학생 눈높이 설명
+	- 10문장 이내 제약
+
+Question → LLM → Answer
+\
+➜ LLM 호출을 하나의 독립 노드로 캡슐화하는 것이 핵심
+
+- 후처리 노드 — `node_summarize`
+	- 역할: LLM 답변 결과를 요약 형태로 가공
+	- 실제 LLM 요약 대신:
+	- 문자열 전처리
+	- 길이 제한
+	- 요약 포맷 생성
+
+> Answer → Post-Processing → Summary
+
+➜ LLM을 쓰지 않는 후처리도 Graph 노드로 분리 가능하다는 점이 중요
+
+3.  Graph 구조 정의 (StateGraph)
+
+`[ llm_answer ] → [ summarize ] → END`
+
+- Entry Point: llm_answer
+- 순차 실행 구조
+- 각 단계의 책임이 명확히 분리됨
+
+```python
+graph.add_edge("llm_answer", "summarize")
+graph.add_edge("summarize", END)
+```
+
+➜ 절차형 코드가 아닌, 실행 흐름을 선언적으로 정의
+
+4. Graph 실행 & 결과 State 확인
+
+```python
+final_state = app.invoke(init_state)
+```
+
+- 실행 결과는 단순 출력이 아니라 최종 State
+- 하나의 실행에서:
+- question
+- answer
+- summary
+를 모두 보존
+
+➜ 디버깅, 로그 저장, 재실행에 매우 유리한 구조
+
+5. Graph 시각화 (Mermaid)
+
+```python
+g = app.get_graph()
+g.draw_mermaid_png()
+```
+
+- LangGraph의 가장 강력한 장점 중 하나
+- LLM 애플리케이션의 실행 흐름을 시각적으로 검증 가능
+- 노드/엣지 구조를 한눈에 파악
+
+이 실습의 의미
+
+구조 : LLM 작업을 Graph로 표현
+\
+설계 : 상태(State) 기반 파이프라인
+\
+확장 : 조건 분기, 반복, 병렬 처리의 기반
+\
+연결 : rag17 (RAG + Graph)로 자연스럽게 확장
+
+➜ rag16은 “LLM을 함수처럼 쓰는 단계”에서 “LLM을 시스템처럼 설계하는 단계”로 넘어가는 분기점이다.
+
+---
+
+### 📌 rag17_chain_graph.ipynb — LangGraph 기반 분기형 RAG + LLM 멀티체인 챗봇
+
+개요:
+
+LangChain과 LangGraph를 결합하여 “질문 유형에 따라 서로 다른 응답 체인으로 분기하는 챗봇”을 구현 실습
+- 사내 문서 관련 질문 → VectorDB 기반 RAG 체인
+- 일반 상식 질문 → 순수 LLM 체인
+- 분류가 애매한 경우 → Fallback 체인
+
+이 전체 흐름을 LangGraph가 워크플로우(Graph)로 제어하고,
+각 노드 내부의 실제 LLM / RAG 로직은 LangChain(LCEL) 이 담당한다.
+
+➜ 즉,
+“LLM 작업은 LangChain, 전체 판단·분기 흐름은 LangGraph” 라는 역할 분리를 명확히 보여주는 예제이다.
+
+
+핵심 내용:
+
+1. 사내 문서 기반 RAG 체인 구성
+- OpenAI Embedding(text-embedding-3-small)을 사용해 사내 문서 임베딩
+- ChromaDB에 벡터 저장 (company-col)
+- Retriever(k=3)를 통해 관련 문서 검색
+- 검색 결과를 Prompt에 삽입하여 답변 생성
+
+RAG 체인의 역할
+- 회사 규정, 근무시간, 연차, 복지 등 → 모델이 “모른다”고 가정해야 할 내부 정보 처리
+
+
+2. 일반 상식 LLM 체인 분리
+- VectorDB / Retrieval 없이
+- 단순 질문 → LLM 답변 구조
+
+의미
+- 모든 질문에 RAG를 쓰지 않아도 됨
+- 불필요한 검색 비용 및 지연 감소
+- “RAG는 필요할 때만 사용”이라는 실전 설계 관점 반영
+
+
+3. 질문 분류(Classification) 체인
+
+질문을 다음 중 하나로 분류:
+- "rag" : 사내 정책·회사 규정 관련
+- "llm" : 일반 상식
+- "unknown" : 애매한 경우
+
+분류 기준을 프롬프트로 명시하고,
+LLM이 반드시 "rag" 또는 "llm" 중 하나를 출력하도록 강제한다.
+
+➜ LLM을 ‘판단자(Classifier)’로 사용하는 패턴을 학습
+
+
+4. LangGraph 기반 조건 분기 워크플로우
+
+Graph 구조 요약:
+
+classify
+   ├─ rag  → rag_answer → END
+   ├─ llm  → llm_answer → END
+   └─ unknown → fallback → END
+
+- Entry Point: classify
+- add_conditional_edges를 이용한 동적 분기
+- 분기 결과에 따라 서로 다른 체인 실행
+
+➜ 절차형 if/else 코드가 아닌,
+선언적인 그래프 기반 흐름 제어
+
+
+5. Fallback 노드 설계
+- 분류 결과가 애매할 경우 대비
+- 사용자에게 상황을 설명한 뒤 일반 LLM 답변 제공
+
+실전 의미
+- LLM 분류의 불확실성 대비
+- 사용자 경험(UX) 안정성 확보
+- 프로덕션 환경에서 매우 중요한 방어 로직
+
+이 실습의 의미
+
+**핵심**
+아키텍처 : RAG + 일반 LLM을 하나의 시스템으로 통합
+\
+역할 분리 : LangGraph(흐름) vs LangChain(실행)
+\
+확장성 : 질문 유형 추가, 체인 추가가 쉬움
+\
+실전성 : 사내 챗봇·헬프데스크 구조와 거의 동일
+
+➜ “현실적인 멀티 소스 챗봇 아키텍처”로 진입하는 단계
+
+---
+
+### 📌 rag18_workflow.ipynb — 
+
+개요:
+
+핵심 내용:
+	•	
+	•	
+
+---
+
+### 📌 rag19_graph_chkpoint.ipynb — 
+
+개요:
+
+핵심 내용:
+	•	
+	•	
+
+---
+
+### 📌 rag20_graph_llm.ipynb — 
+
+개요:
+
+핵심 내용:
+	•	
+	•	
+
+---
