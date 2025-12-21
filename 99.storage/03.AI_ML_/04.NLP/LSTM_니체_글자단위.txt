@@ -1,0 +1,111 @@
+# 글자 단위 LSTM (Nietzsche) + EarlyStopping/ModelCheckpoint
+
+import keras, numpy as np, random, sys
+from keras import layers
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+
+# 0) 데이터 로드
+path = keras.utils.get_file('nietzsche.txt',
+    origin='https://s3.amazonaws.com/text-datasets/nietzsche.txt')
+text = open(path, encoding='utf-8').read().lower() 
+print('말뭉치 크기', len(text))
+
+# 1) 슬라이딩 윈도우 시퀀스 생성
+maxlen = 60     # 입력 시퀀스 길이
+step = 3        # 슬라이딩 간격
+sentences, next_chars = [], []     # 입력/출력 리스트
+
+for i in range(0, len(text) - maxlen, step): # 3글자 간격으로 이동
+    sentences.append(text[i:i+maxlen])    # 입력 시퀀스
+    next_chars.append(text[i+maxlen])    # 다음 글자(라벨)
+print('시퀀스 개수', len(sentences))
+
+# 2) 문자 사전 및 원-핫 벡터화
+chars = sorted(list(set(text)))   # 고유 문자 집합
+print('고유한 글자', len(chars))
+char_indices = {c:i for i, c in enumerate(chars)}  # 문자→정수 매핑
+
+print('벡터화...')
+x = np.zeros((len(sentences), maxlen, len(chars)), dtype=bool)    # 입력 원-핫 배열
+y = np.zeros((len(sentences), len(chars)), dtype=bool)            # 출력 원-핫 배열
+
+for i, sentence in enumerate(sentences):      # 각 시퀀스에 대해
+    for t, ch in enumerate(sentence):         # 시퀀스 내 각 글자
+        x[i, t, char_indices[ch]] = True         # 해당 위치에 1 세팅(원-핫 인코딩)
+    y[i, char_indices[next_chars[i]]] = True  # 정답 글자 위치에 1 세팅
+
+# 3) 모델 정의
+model = keras.models.Sequential([
+    layers.Input(shape=(maxlen, len(chars))), 
+    layers.LSTM(units=128, activation='tanh'), 
+    layers.Dense(units=len(chars), activation='softmax') # 다음 글자 확률 출력
+])
+model.compile(loss='categorical_crossentropy', 
+    optimizer=keras.optimizers.RMSprop(learning_rate=0.005))
+
+# 콜백 설정
+callbacks = [
+    EarlyStopping(monitor='loss', patience=2, restore_best_weights=True),
+    ModelCheckpoint(filepath='nietzsche_char_lstm.keras',
+        monitor='loss', save_best_only=True, save_weights_only=False)
+]
+
+# 4) 샘플링 함수 (다양성 적용 - temperature 값을 조정해서 창의성(무작위성)을 조절)
+def sample(preds, temperature=1.0): # 확률 분포에서 문자 샘플링
+    preds = np.asarray(preds).astype('float64')  # 예측 결과를 부동소수형 numpy 배열로 변환 (정밀도 확보)
+
+    # 확률에 로그를 취해 스케일 조정(=온도 조절). 너무 작은 값은 0으로 안 가게 clip 사용
+    preds = np.log(np.clip(preds, 1e-9, 1.0)) / max(1e-8, temperature)
+
+    preds = np.exp(preds) / np.sum(np.exp(preds))  # 다시 softmax로 변환해 확률 분포 복원
+    return np.argmax(np.random.multinomial(1, preds, 1))  # 확률에 따라 인덱스 선택(1개 문자를 무작위 샘플링)
+
+# 5) 학습 & 생성
+random.seed(42)
+start_index = random.randint(0, len(text) - maxlen - 1) # 시드 시작 위치 랜덤 선택
+
+# 훈련(fit)과 텍스트 생성이 한 에포크씩 교대로 반복
+for epoch in range(1, 5): # 1부터 4까지 총 4에포크(epoch) 반복.
+    # 수동으로 루프를 돌면서 각 회차 끝마다 '샘플 텍스트를 생성'하기 위해 따로 분리한 구조
+    # 모든 학습 데이터를 한 번 돌면서 LSTM 파라미터를 업데이트하고, 손실 개선 여부에 따라 중간 저장
+    print('에포크', epoch)
+
+    # 데이터 전체를 1번만 학습(전체 루프에서 4번 반복하므로 결국 총 4에포크 학습)
+    model.fit(x, y, batch_size=128, epochs=1, verbose=1, callbacks=callbacks)  
+
+    seed_text = text[start_index:start_index + maxlen]  # 시드 텍스트(텍스트 생성의 출발점) 추출
+    print('---시드 텍스트 : "' + seed_text + '"')
+
+    for temperature in [0.2, 0.5, 1.0, 1.2]:  # temperature별 다양성 실험
+        print('다양성 : ', temperature)
+        generated_text = seed_text  # 생성 시작 텍스트
+        sys.stdout.write(generated_text)
+
+        # 초기 버퍼 생성 (1회만)
+        # 모델의 입력 형식과 동일하게 (배치 크기 1, 시퀀스 길이 60, 문자 종류 수) 크기의 배열을 생성
+        sampled = np.zeros((1, maxlen, len(chars)), dtype=np.float32)
+        for t, ch in enumerate(generated_text):  # 시드 텍스트 원-핫화(LSTM이 이해할 수 있는 숫자 형태)
+            sampled[0, t, char_indices[ch]] = 1.0
+            # char_indices[ch]는 해당 문자의 사전 내 인덱스(예: 'a'→0, 'b'→1 …).
+            # 따라서 sampled[0, t, char_indices[ch]] 위치만 1로 만들어주면,
+            # 그 문자를 표현하는 원-핫 벡터(one-hot vector) 가 완성.
+            # 예: 문자'a'   인덱스0   원핫[1,0,0,...,0]
+            #     문자'b'   인덱스1   원핫[0,1,0,...,0] ...
+            # 이 벡터를 LSTM 입력으로 쓰면 모델은 “시드 문장의 60글자 패턴”을 인식하고
+            # 그 다음 글자 확률(preds)을 계산할 수 있게 됨.
+
+        for _ in range(400):  # 400글자 길이의 새로운 문장 생성
+            preds = model.predict(sampled, verbose=0)[0]  # 다음 글자 예측
+            next_char = chars[sample(preds, temperature)] # 확률 기반 샘플링
+
+            # 버퍼 쉬프트 후 새 글자 추가
+            # 입력 시퀀스를 한 글자씩 앞으로 밀고, 새로 생성된 글자를 맨 끝에 추가
+            # 매 스텝마다 모델이 다음 글자를 예측하면, 그 글자를 버퍼와 문자열 양쪽에 추가하고, 가장 오래된 글자 하나를 버림
+            sampled[:, 0:-1, :] = sampled[:, 1:, :]  # 모든 시퀀스를 좌로 한 칸 이동. 예:[a, b, c, d, e] → [b, c, d, e, ?]
+            sampled[:, -1, :] = 0.0   # 마지막 칸(-1 위치)을 0으로 초기화
+            sampled[0, -1, char_indices[next_char]] = 1.0 # 마지막 위치에 새 글자 세팅. 예:[b, c, d, e, new_char]
+
+            generated_text = generated_text[1:] + next_char # 시퀀스 업데이트
+            sys.stdout.write(next_char)
+            sys.stdout.flush()
+        print()  # 한 temperature 종료 후 줄바꿈
