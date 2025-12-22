@@ -119,7 +119,7 @@ Self-Attention, Transformer
 - Attention 메커니즘 구현 실습
 - Transformer 구조 이해
 
-✏️ [03_AI_MLDL/04.nlp](03_AI_MLDL/04.nlp)￼
+✏️ [03_AI_MLDL/04.nlp](03_AI_MLDL/04.nlp/README.md)￼
 
 ---
 
@@ -140,7 +140,7 @@ Embeddings, RAG (Retrieval-Augmented Generation)
 \
 👉 [03_AI_MLDL/06.lang](03_AI_MLDL/06.lang)
 \
-📖 [03_AI_MLDL/07.rag](03_AI_MLDL/07.rag)
+📖 [03_AI_MLDL/07.rag](03_AI_MLDL/07.rag/README.md)
 
 ---
 
