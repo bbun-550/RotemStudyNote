@@ -590,23 +590,73 @@ LSTM 언어 모델을 학습하고, 다시 자모를 결합하여 **한글 문�
 
 ---
 
-### 📌 attention01.ipynb — 
+### 📌 attention01.ipynb — Dot-Product Attention 메커니즘의 수치적 이해
+ 
 
 개요:
+\
+Attention 메커니즘의 핵심 구조인 **Query–Key–Value(QKV)** 개념을 아주 작은 벡터 예제를 통해 **직접 계산**하는 실습.\
+신경망 구현 이전에 Attention이 **“어디에 얼마나 집중하는가”를 어떻게 수치화하는지**를 내적(dot-product)과 softmax 연산으로 명확히 확인하는 것이 목적이다
+
 
 핵심 내용:
-	•	
-	•	
-
+- **Query–Key–Value(QKV) 구조의 역할 분리**
+    - Query(Q): _현재 무엇에 집중할지 묻는 벡터_
+    - Key(K): _입력 각 요소의 특징을 나타내는 벡터_
+    - Value(V): _집중 결과로 실제 가져올 정보 벡터_
+    
+- **Dot-Product Attention의 핵심 연산 흐름**    
+    1. Query와 Key의 내적 → 유사도 점수(scores)
+    2. Softmax → Attention 가중치(weights)
+    3. Value의 가중합 → Attention 출력(context vector)
+    
+- **Attention 가중치의 해석**
+    - Softmax 결과는 “입력 요소별 중요도 분포”
+    - 가중치의 합은 항상 1 → 확률적 해석 가능
+    
+- **Attention 출력 벡터의 의미**    
+    - 단일 입력이 아니라, **여러 입력을 중요도에 따라 혼합한 요약 벡터**
+    
+- **수식이 아닌 숫자 계산을 통해**
+    - “Attention은 선택이 아니라 가중 평균이다”라는 개념을 직관적으로 체감
+    
 ---
 
-### 📌 attention02.ipynb — 
+### 📌 attention02.ipynb — Scaled Dot-Product Attention과 Context Vector의 역할
 
 개요:
+\
+**Tokenizer + 시퀀스 + 위치별 Query**를 포함한
+보다 실제 번역 구조에 가까운 **Scaled Dot-Product Attention 흐름** 실습.\
+인코더–디코더 구조 없이도, Attention만으로 **문맥 기반 대응 관계**가 형성되는 과정을 확인한다.
+  
 
 핵심 내용:
-	•	
-	•	
+- **Scaled Dot-Product Attention 도입**
+    - 유사도 계산 시
+        $\text{scores} = \frac{QK^T}{\sqrt{d_k}}$    
+    - 차원 수가 커질수록 점수가 커지는 문제를 완화하기 위한 스케일링        
+    
+- **Context Vector 개념의 명확화**    
+    - Context Vector = Attention이 요약한 입력 정보        
+    - 디코더는 각 출력 시점마다 **다른 Context Vector**를 가질 수 있음        
+    
+- **출력 위치별 Attention 분포 차이**    
+    - 디코더의 각 타임스텝마다 Query가 달라짐        
+    - 같은 입력이라도 출력 위치에 따라 집중 대상이 달라짐        
+    
+- **Alignment(정렬) 개념의 등장**    
+    - Attention 가중치는 “출력 토큰 ↔ 입력 토큰” 간 대응 관계를 의미        
+    - 번역 문제에서 단어 정렬(word alignment)의 직관적 표현        
+    
+- **인코더 없이도 Attention 원리 설명 가능**    
+    - 실제 모델 대신 one-hot 벡터로 Key/Value 구성        
+    - Attention의 **논리 구조 자체**에 집중한 설계        
+    
+- **Attention의 핵심 장점 확인**    
+    - 모든 입력을 동시에 참고 가능        
+    - RNN의 장기 의존성 문제를 구조적으로 해결할 수 있음을 시사        
+    
 
 ---
 
