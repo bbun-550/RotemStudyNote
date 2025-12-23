@@ -660,31 +660,209 @@ Attention 메커니즘의 핵심 구조인 **Query–Key–Value(QKV)** 개념�
 
 ---
 
-### 📌 tformer01_selfAttention.ipynb — 
+### 📌 tformer01_selfAttention.ipynb — Transformer Self-Attention의 핵심 연산 구조 이해
 
-개요:
+개요:\
+Transformer의 핵심 구성 요소인 Self-Attention 메커니즘을
+아주 작은 숫자 벡터 예제를 통해 단계별로 직접 계산해보는 실습이다.
+Query, Key, Value가 동일한 입력에서 만들어지는 Self-Attention의 연산 흐름과
+각 토큰이 자기 자신을 포함해 다른 토큰을 어떻게 참조하는지를 직관적으로 이해하는 것이 목적이다.
+
 
 핵심 내용:
-	•	
-	•	
+- Self-Attention의 입력 구조
+    - 3개의 토큰(A, B, C)을 2차원 임베딩 벡터로 표현
+    - 입력 행렬 X shape = (num_tokens, embedding_dim)
+- 예:
+    - A = [1, 0], B = [0, 1], C = [1, 1]
+- Query / Key / Value의 생성
+- Self-Attention에서는 Q, K, V가 모두 동일한 입력 X에서 출발
+- 실제 Transformer에서는 Wq, Wk, Wv를 통해 선형 변환되지만,
+본 실습에서는 개념 이해를 위해 단순화
+- Scaled Dot-Product Attention 계산
+    - Attention score 계산:
+    $\text{scores} = \frac{QK^T}{\sqrt{d_k}}$
+- 각 토큰이 다른 모든 토큰과 얼마나 유사한지를 수치로 표현
+- 스케일링(√d_k)을 통해 값 폭주 방지
+- Softmax를 통한 Attention Weights
+- 각 Query 기준으로 score를 softmax
+- 결과:
+    - 각 토큰이 모든 토큰에 얼마나 집중하는지를 나타내는 확률 분포
+- 행 단위 합 = 1
+- Value의 가중합 → Self-Attention 출력
+- Attention weights × V
+- 결과 벡터는:
+- 자기 자신 + 다른 토큰 정보가 가중 평균된 새로운 표현
+- 출력 shape = (num_tokens, embedding_dim)
+- Self-Attention의 의미
+- 각 토큰이 문맥 안에서 다른 토큰을 참조한 결과로 재표현
+- RNN 없이도 토큰 간 관계를 직접 모델링 가능
+- Transformer가 Seq2Seq를 대체할 수 있었던 핵심 이유를 수치적으로 확인
 
 ---
 
-### 📌 tformer02_selfAttention.ipynb — 
+### 📌 tformer02_selfAttention.ipynb — 문장 수준 Self-Attention과 문맥(Context) 해석
 
-개요:
+개요:\
+Self-Attention의 수식적 계산을 넘어서,
+실제 문장 토큰 단위에서 Attention이 “어떤 단어를 참조하는지”를 해석하는 실습이다.
+임의로 생성한 임베딩과 학습 가중치 행렬 $W_q$, $W_k$, $W_v$ 사용해
+각 단어의 Attention 가중치 분포와 Context Vector를 직접 확인한다.
+특히 대명사 “it”이 문맥 속에서 어떤 단어들에 의존하는지를 관찰함으로써,
+Self-Attention이 참조 관계(coreference) 를 어떻게 포착하는지 직관적으로 이해 목적.
 
 핵심 내용:
-	•	
-	•	
+- 문장 단위 Self-Attention 실험 환경 구성
+    - 입력 문장:
+“The animal didn’t cross the street because it was too tired.”
+    - 토큰 수: 12개
+    - 각 단어를 4차원 임베딩 벡터(d_model = 4) 로 표현
+    - 실제 학습 대신 랜덤 임베딩 + 랜덤 가중치 행렬로 Attention 구조만 시뮬레이션
+    - Query / Key / Value의 “선형 변환” 의미 확인
+    - 단순히 Q=K=V가 아니라:
+$$Q = XW_q,\quad K = XW_k,\quad V = XW_v$$
+- 같은 단어 임베딩이라도
+    - Query: “내가 무엇을 보고 싶은가”
+    - Key: “나는 어떤 정보를 가진 단어인가”
+    - Value: “실제로 전달할 정보”
+- 역할 분리의 필요성을 구조적으로 확인
+- Scaled Dot-Product Attention의 실제 동작
+    - 점수 계산:
+$$\text{scores} = \frac{QK^T}{\sqrt{d_k}}$$
+- Softmax → Attention Weight Matrix
+    - 각 행(row)은 하나의 Query(단어)가
+모든 단어(Key)에 얼마나 집중하는지를 의미
+    - 행 단위 합 = 1
+    - 특정 단어(“it”)의 Attention 해석
+    - “it” 토큰에 해당하는 attention 가중치 행을 추출
+- 출력 예시:
+    - street, tired, was 등에 상대적으로 높은 가중치
+- 의미:
+    - “it”이 문장 내에서
+어떤 단어들을 문맥적으로 참조하고 있는지를 수치로 확인
+- 대명사가 앞선 명사/상태를 참조하는 구조를
+명시적 규칙 없이도 Attention으로 표현 가능
+- Context Vector의 의미 명확화
+    - Context Vector:
+$$\text{context}_i = \sum_j \alpha_{ij} V_j$$
+- “it”의 Context Vector는 주변 단어들의 Value 벡터를
+Attention 가중치로 가중합한 결과
+    - 즉, ‘it’이 문맥을 반영해 재해석된 표현
+- RNN의 hidden state와 달리, 모든 입력 단어를 동시에 직접 참조
+    - 단일 단어 관점에서의 Q / K / V 예시
+    - “student”라는 임의 단어에 대해
+    - Query / Key / Value 벡터를 각각 출력
+- 목적:
+    - “Q, K, V는 단순한 개념이 아니라
+실제로는 서로 다른 선형 변환 결과”임을 수치로 확인
+    - Transformer에서 표현 공간이 분리되는 이유를 직관적으로 이해
+- tformer01과의 차별 포인트
+- tformer01:
+    - 작은 숫자 예제로 Self-Attention 수식 자체 이해
+- tformer02:
+    - 문장 단위 토큰
+- Attention 가중치 해석
+    - 대명사·문맥 참조 관점
+    - Self-Attention이 “의미적 연결”을 만드는 방식을 강조
+
+**정리 한 줄 요약:**
+
+>Self-Attention은 단어 하나를 고립된 벡터로 처리하지 않고,
+문장 내 모든 단어와의 관계를 가중치로 계산해
+‘문맥을 반영한 새로운 표현(Context Vector)’으로 재구성한다.
 
 ---
 
-### 📌 tformer03_selfAttention.ipynb — 
+### 📌 tformer03_selfAttention.ipynb — Multi-Head Attention 기반 Transformer Encoder와 문장 분류
 
-개요:
+개요:\
+Self-Attention을 실제 모델 구조로 확장하여,
+**Multi-Head Attention + Transformer Encoder** 블록을 이용해
+문장 감정 분류(Sentiment Analysis)를 수행.
+
+기존 RNN/LSTM 기반 분류와 달리,
+순차 처리 없이도 문장 전체의 관계를 병렬적으로 학습할 수 있는
+Transformer 인코더 구조의 실용적인 활용을 경험하는 것이 목적이다.
+본 실습에서는 Seq2Seq 구조가 아닌, 인코더만 사용하는 Transformer가
+분류 문제에 어떻게 적용되는지를 명확히 보여준다.
 
 핵심 내용:
-	•	
-	•	
+- Seq2Seq vs 문장 분류 문제 구조 구분
+    - 번역·요약·텍스트 생성:
+    → Encoder + Decoder 필요 (Seq2Seq)
+    - 감정 분석·주제 분류·스팸 탐지:
+    → 입력 문장 → 클래스 라벨 출력
+    → Decoder 불필요, Encoder만 사용
+    - Transformer는 문제 유형에 따라
+Encoder-only / Encoder–Decoder로 유연하게 사용 가능함을 확인
+- IMDB 데이터셋 기반 실전 분류 문제
+    - 입력 데이터: 영화 리뷰 (정수 인덱스 시퀀스)
+    - 출력 라벨: 긍정(1) / 부정(0)
+    - 입력 전처리: 
+        - 최대 단어 수 제한 (max_words = 10000)
+        - 시퀀스 길이 통일 (pad_sequences, max_len = 100)
+    - “텍스트 → 정수 시퀀스 → 모델 입력” 파이프라인 복습
+- Transformer Encoder Block 구조 분해
+    - 하나의 Encoder 블록 구성:
+	    1.	Layer Normalization
+	    2.	Multi-Head Self-Attention
+	    3.	Residual Connection (잔차 연결)
+	    4.	Feed Forward Network (Conv1D 기반)
+	    5.	Residual Connection (2차)
+    - 핵심 포인트:
+        - Attention과 FFN 사이에 항상 잔차 연결
+        - 깊은 네트워크에서도 gradient 흐름 유지
+- Multi-Head Attention의 실질적 의미
+    - num_heads = 4
+    - 같은 문장을 서로 다른 4개의 관점(head) 에서 동시에 해석
+    - 각 head는 서로 다른 관계 패턴(의존성, 강조 포인트)을 학습
+    - 결과적으로:
+        - 단일 Self-Attention보다 풍부한 표현 획득
+- **Feed Forward Network**를 Conv1D로 구현한 이유
+    - kernel_size = 1인 Conv1D는 Dense와 동일한 연산
+    - 장점:
+        - GPU 병렬 처리 효율 ↑
+        - Dropout 삽입 용이
+    - Transformer 논문의 FFN 구조를 실용적으로 변형한 구현 방식
+- Position Encoding의 단순 대체 방식
+    - 정식 Positional Encoding 대신:
+        - Embedding 출력에 Gaussian Noise 추가
+    - 목적:
+        - 토큰 위치에 대한 미세한 차이 부여
+        - 학습 안정성과 일반화 보조
+    - “위치 정보가 완전히 없는 Self-Attention의 한계”를 완화하는 실험적 접근
+- GlobalAveragePooling의 역할
+    - Transformer Encoder 출력:
+        - shape: (batch, timesteps, hidden_dim)
+    - GlobalAveragePooling1D:
+        - 모든 토큰 정보를 평균 내어
+        - 문장 전체를 대표하는 하나의 벡터 생성
+    - RNN의 “마지막 hidden state” 역할을 순서 의존 없이 대체
+- **분류기(MLP Head) 구성**
+    - Transformer Encoder 이후:
+        - Dense(ReLU) + Dropout
+        - Sigmoid 출력층
+    - 출력 해석:
+        - 0~1 사이 확률
+        - 0.5 기준 → Positive / Negative
+- Transformer 기반 분류 모델의 장점 체감
+    - RNN/LSTM 대비:
+    - 병렬 처리 가능 → 학습 속도 ↑
+    - 장기 의존성 문제 구조적으로 해결
+    - 문장 길이에 덜 민감
+    - “Attention is All You Need”가 생성뿐 아니라 분류 문제에도 강력함을 확인
+- 모델 성능 평가 시각화
+    - 학습 곡선:
+        - Accuracy / Loss (Train vs Validation)
+    - Confusion Matrix:
+        - Positive / Negative 분류 성능 직관적 확인
+    - ROC Curve & AUC:
+        - 이진 분류 모델의 전반적 판별력 평가
+- Transformer가 실제 분류 문제에서도 안정적으로 동작함을 검증
 
+
+**정리 한 줄 요약:**
+
+Self-Attention을 “설명용 계산”에서 끝내지 않고,
+**Multi-Head Attention + Transformer Encoder 구조**로 확장하여
+RNN 없이도 문장 의미를 요약하고 분류할 수 있음을 증명.
