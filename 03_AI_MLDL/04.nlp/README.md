@@ -28,7 +28,7 @@
 │── attention01.ipynb
 │── transformer01_selfAttention.ipynb
 │── transformer02_selfAttention.ipynb
-│── transformer03_selfAttention.ipynb
+│── seq2seq.ipynb
 └── README.md
 ```
 
@@ -47,6 +47,7 @@
 - 문장 → 단어 단위 분해(Tokenization)
 - NLP 파이프라인에서 전처리의 중요성 인식
 
+👉 [NLP 기본 이론 정리](00.NOTES/251027_nlp.md)
 
 ---
 
@@ -66,6 +67,8 @@
 - PCA를 활용한 고차원 단어 벡터의 2차원 시각화
 - 벡터 각도(코사인 유사도 ↔ 각도)의 관계 해석
 - 특정 단어 기준 유사도를 정렬해 텍스트 기반으로 비교 표현
+
+👉 [NLP 기본 이론 정리](00.NOTES/251027_nlp.md)
 
 ---
 
@@ -119,6 +122,8 @@ $4 × (input_dim + units + 1) × units$
 - `return_sequences=True`
 → many-to-many 구조 (모든 시점의 출력 반환)
 - RNN 출력 형태 (batch_size, units) vs (batch_size, timesteps, units) 차이 이해
+
+👉 [RNN & LSTM 구조 이해와 시계열 학습 이론 정리](00.NOTES/251028_rnn.md)
 
 ---
 
@@ -220,8 +225,9 @@ LSTM(Long Short-Term Memory)의 동작 방식과 시계열 학습 과정을 실�
 np.where(pred > 0.5, 1, 0)
 ```
 
-
 > **“신경망의 출력은 확률이며, 분류 기준은 사람이 정한다”는 점을 명확히 확인**
+
+👉 [RNN 기반 텍스트 분류·생성 실습에서 새롭게 등장한 이론 정리](00.NOTES/251029_rnn.md)
 
 ---
 
@@ -318,6 +324,7 @@ Embedding → LSTM → Dense(ReLU) → Dense(Softmax)
 | 목적     | 긍정/부정 판단            | 다음 단어 예측                 |
 | 결과 활용  | 분류                  | 텍스트 생성                   |
 
+👉 [RNN 기반 텍스트 분류·생성 실습에서 새롭게 등장한 이론 정리](00.NOTES/251029_rnn.md)
 
 ---
 
@@ -461,6 +468,8 @@ Embedding → LSTM → Dense(ReLU) → Dense(Softmax)
   - 희귀 단어(OOV : Out of Vocabulary) 문제가 없음
   - 철자, 형태 패턴 학습에 강함
   - 의미 단위 이해는 제한적 (문법·의미는 약함)
+
+👉 [Character-level Language Model & Text Generation 이론 정리](00.NOTES/251030_rnn.md)
 
 ---
 
@@ -619,7 +628,9 @@ Attention 메커니즘의 핵심 구조인 **Query–Key–Value(QKV)** 개념�
     
 - **수식이 아닌 숫자 계산을 통해**
     - “Attention은 선택이 아니라 가중 평균이다”라는 개념을 직관적으로 체감
-    
+
+👉 [Attention  이론 정리](00.NOTES/251104_attention.md)
+
 ---
 
 ### 📌 attention02.ipynb — Scaled Dot-Product Attention과 Context Vector의 역할
@@ -657,6 +668,7 @@ Attention 메커니즘의 핵심 구조인 **Query–Key–Value(QKV)** 개념�
     - 모든 입력을 동시에 참고 가능        
     - RNN의 장기 의존성 문제를 구조적으로 해결할 수 있음을 시사        
     
+👉 [Attention  이론 정리](00.NOTES/251104_attention.md)
 
 ---
 
@@ -673,31 +685,32 @@ Query, Key, Value가 동일한 입력에서 만들어지는 Self-Attention의 �
 - Self-Attention의 입력 구조
     - 3개의 토큰(A, B, C)을 2차원 임베딩 벡터로 표현
     - 입력 행렬 X shape = (num_tokens, embedding_dim)
-- 예:
-    - A = [1, 0], B = [0, 1], C = [1, 1]
+    - 예:
+        - A = [1, 0], B = [0, 1], C = [1, 1]
 - Query / Key / Value의 생성
-- Self-Attention에서는 Q, K, V가 모두 동일한 입력 X에서 출발
-- 실제 Transformer에서는 Wq, Wk, Wv를 통해 선형 변환되지만,
-본 실습에서는 개념 이해를 위해 단순화
+    - Self-Attention에서는 Q, K, V가 모두 동일한 입력 X에서 출발
+    - 실제 Transformer에서는 Wq, Wk, Wv를 통해 선형 변환되지만, 본 실습에서는 개념 이해를 위해 단순화
 - Scaled Dot-Product Attention 계산
     - Attention score 계산:
     $\text{scores} = \frac{QK^T}{\sqrt{d_k}}$
-- 각 토큰이 다른 모든 토큰과 얼마나 유사한지를 수치로 표현
-- 스케일링(√d_k)을 통해 값 폭주 방지
-- Softmax를 통한 Attention Weights
-- 각 Query 기준으로 score를 softmax
-- 결과:
-    - 각 토큰이 모든 토큰에 얼마나 집중하는지를 나타내는 확률 분포
-- 행 단위 합 = 1
+    - 각 토큰이 다른 모든 토큰과 얼마나 유사한지를 수치로 표현
+    - 스케일링(√d_k)을 통해 값 폭주 방지
+    - Softmax를 통한 Attention Weights
+    - 각 Query 기준으로 score를 softmax
+    - 결과:
+        - 각 토큰이 모든 토큰에 얼마나 집중하는지를 나타내는 확률 분포
+        - 행 단위 합 = 1
 - Value의 가중합 → Self-Attention 출력
-- Attention weights × V
-- 결과 벡터는:
-- 자기 자신 + 다른 토큰 정보가 가중 평균된 새로운 표현
-- 출력 shape = (num_tokens, embedding_dim)
+    - Attention weights × V
+    - 결과 벡터는:
+        - 자기 자신 + 다른 토큰 정보가 가중 평균된 새로운 표현
+    - 출력 shape = (num_tokens, embedding_dim)
 - Self-Attention의 의미
-- 각 토큰이 문맥 안에서 다른 토큰을 참조한 결과로 재표현
-- RNN 없이도 토큰 간 관계를 직접 모델링 가능
-- Transformer가 Seq2Seq를 대체할 수 있었던 핵심 이유를 수치적으로 확인
+    - 각 토큰이 문맥 안에서 다른 토큰을 참조한 결과로 재표현
+    - RNN 없이도 토큰 간 관계를 직접 모델링 가능
+    - Transformer가 Seq2Seq를 대체할 수 있었던 핵심 이유를 수치적으로 확인
+
+👉 [Transformer 이론 정리](00.NOTES/251105_transformer.md)
 
 ---
 
@@ -770,6 +783,8 @@ Attention 가중치로 가중합한 결과
 >Self-Attention은 단어 하나를 고립된 벡터로 처리하지 않고,
 문장 내 모든 단어와의 관계를 가중치로 계산해
 ‘문맥을 반영한 새로운 표현(Context Vector)’으로 재구성한다.
+
+👉 [Transformer 이론 정리](00.NOTES/251105_transformer.md)
 
 ---
 
@@ -866,3 +881,5 @@ Encoder-only / Encoder–Decoder로 유연하게 사용 가능함을 확인
 Self-Attention을 “설명용 계산”에서 끝내지 않고,
 **Multi-Head Attention + Transformer Encoder 구조**로 확장하여
 RNN 없이도 문장 의미를 요약하고 분류할 수 있음을 증명.
+
+👉 [Transformer 이론 정리](00.NOTES/251105_transformer.md)
